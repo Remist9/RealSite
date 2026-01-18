@@ -141,7 +141,6 @@ def login(data: LoginRequest, response: Response):
 
 @router.get("/check")
 def auth_check(request: Request):
-    print("COOKIES:", request.cookies)
     return {
         "authenticated": is_authenticated(request)
     }
