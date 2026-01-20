@@ -58,4 +58,4 @@ document.querySelectorAll(".nav-btn").forEach((btn) => {
 });
 
 // === СТАРТ СТРАНИЦЫ ===
-setPage("sale");
+//setPage("sale");

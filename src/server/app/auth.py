@@ -146,4 +146,33 @@ def auth_check(request: Request):
     }
 
 
+@router.post("/logout")
+def logout(request: Request, response: Response):
+    token = request.cookies.get("access_token")
+
+    if not token:
+        return {"status": "ok"}
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        cur.execute(
+            """
+            DELETE FROM user_sessions
+            WHERE access_token = %s
+            """,
+            (token,)
+        )
+        conn.commit()
+
+        # удаляем cookie
+        response.delete_cookie("access_token")
+
+        return {"status": "ok"}
+
+    finally:
+        cur.close()
+        conn.close()
+
 
