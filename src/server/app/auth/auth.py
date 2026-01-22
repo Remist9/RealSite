@@ -6,7 +6,7 @@ import secrets
 from app.db import get_db
 from app.schemas import RegisterRequest, LoginRequest
 
-from app.auth_utils import is_authenticated
+from app.auth.session import is_authenticated
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -14,13 +14,14 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-def register(data: RegisterRequest):
+def register(data: RegisterRequest, response: Response):
     password_hash = pwd_context.hash(data.password)
 
     conn = get_db()
     cur = conn.cursor()
 
     try:
+        # 1️⃣ создаём пользователя
         cur.execute(
             """
             INSERT INTO realsite_user (login, password_hash)
@@ -29,14 +30,38 @@ def register(data: RegisterRequest):
             """,
             (data.login, password_hash)
         )
-
         user_id = cur.fetchone()[0]
+
+        # 2️⃣ создаём профиль
+        cur.execute(
+            """
+            INSERT INTO user_profile (user_id, first_name, last_name)
+            VALUES (%s, %s, %s)
+            """,
+            (user_id, "", "")
+        )
+
+        # 3️⃣ создаём сессию
+        access_token = secrets.token_urlsafe(32)
+        cur.execute(
+            """
+            INSERT INTO user_sessions (user_id, access_token)
+            VALUES (%s, %s)
+            """,
+            (user_id, access_token)
+        )
+
         conn.commit()
 
-        return {
-            "status": "ok",
-            "user_id": user_id
-        }
+        # 4️⃣ ставим cookie БЕЗ max_age → session-cookie
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            samesite="lax",
+        )
+
+        return {"status": "ok"}
 
     except psycopg2.errors.UniqueViolation:
         conn.rollback()
@@ -45,8 +70,9 @@ def register(data: RegisterRequest):
             detail="Логин уже занят"
         )
 
-    except Exception:
+    except Exception as e:
         conn.rollback()
+        print("REGISTER ERROR:", e)
         raise HTTPException(
             status_code=500,
             detail="Ошибка сервера"
@@ -55,6 +81,8 @@ def register(data: RegisterRequest):
     finally:
         cur.close()
         conn.close()
+
+
 
 
 @router.post("/login")

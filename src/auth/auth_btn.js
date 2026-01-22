@@ -1,3 +1,5 @@
+import {API_URL} from "../config.js"
+ 
 function validateLogin(login) {
   if (login.length < 3) {
     return "Логин должен быть не короче 3 символов";
@@ -36,11 +38,12 @@ export function showAuthModal(onSuccess) {
   let mode = "choose"; // choose | login | register
 
   async function registerUser(login, password) {
-  const res = await fetch("http://localhost:8000/auth/register", {
+  const res = await fetch(`${API_URL}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify({ login, password }),
   });
 
@@ -103,10 +106,12 @@ export function showAuthModal(onSuccess) {
                 />
 
               
-              <label>
-                <input type="checkbox" class="auth-remember" />
-                Запомнить меня
-              </label>
+              ${mode === "login" ? `
+                <label class="text-white text-xs flex items-center gap-1">
+                  <input type="checkbox" class="auth-remember" />
+                  Запомнить меня
+                </label>
+              ` : ""}
 
               <div class="auth-error text-red-200 text-xs hidden"></div>
 
@@ -186,7 +191,7 @@ export function showAuthModal(onSuccess) {
         const rememberCheckbox = modal.querySelector(".auth-remember");
         const rememberMe = rememberCheckbox?.checked ?? false;
 
-        fetch("http://localhost:8000/auth/login", {
+        fetch(`${API_URL}/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

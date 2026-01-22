@@ -23,20 +23,30 @@ export function showLogoutConfirm(onConfirm) {
     </div>
   `;
 
-  overlay.addEventListener("click", (e) => {
+  const close = () => overlay.remove();
+
+  overlay.addEventListener("click", async (e) => {
+    // 👇 клик по фону
     if (e.target === overlay) {
-      overlay.remove();
+      close();
       return;
     }
 
+    // 👇 отмена
     if (e.target.closest(".logout-cancel")) {
-      overlay.remove();
+      e.stopPropagation(); // 🔥 ВАЖНО
+      close();
       return;
     }
 
+    // 👇 подтверждение
     if (e.target.closest(".logout-confirm")) {
-      overlay.remove();
-      onConfirm();
+      e.stopPropagation(); // 🔥 ВАЖНО
+      try {
+        await onConfirm();
+      } finally {
+        close();
+      }
     }
   });
 

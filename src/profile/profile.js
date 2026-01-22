@@ -1,6 +1,39 @@
-import { showLogoutConfirm } from "./logout_modal.js";
-import { logoutRequest } from "./auth_actions.js";
-import { showAuthModal } from "./auth_btn.js";
+import { showLogoutConfirm } from "../auth/logout_modal.js";
+import { logoutRequest } from "../auth/auth_actions.js";
+import { showAuthModal } from "../auth/auth_btn.js";
+import { getMyProfile } from "./profile_api.js";
+import { userInfoEdit } from "./user_info_edit.js";
+
+
+async function loadProfile(main_box) {
+  try {
+    const profile = await getMyProfile();
+
+    const loginEl = main_box.querySelector("#profile-login");
+    const fullNameEl = main_box.querySelector("#profile-fullname");
+
+    if (loginEl) {
+      loginEl.textContent = profile.login;
+    }
+
+    if (fullNameEl) {
+      const firstName = profile.first_name?.trim();
+      const lastName = profile.last_name?.trim();
+
+      if (firstName || lastName) {
+        fullNameEl.textContent = `${firstName || "Имя"} ${lastName || "Фамилия"}`;
+      } else {
+        fullNameEl.textContent = "Имя Фамилия";
+      }
+    }
+
+  } catch (err) {
+    console.error("Ошибка загрузки профиля:", err);
+    showAuthModal();
+  }
+}
+
+
 
 export function renderProfile(main_box) {
   // сбрасываем классы хоста (по желанию)
@@ -14,14 +47,21 @@ export function renderProfile(main_box) {
       <!-- USER INFO -->
       <div class="user_info w-full bg-blue-200">
         <div class="flex items-center px-4 gap-8 py-4">
-
-          <!-- Аватар -->
-          <div class="avatar w-40 h-48 bg-gray-400 rounded-lg flex-shrink-0"></div>
-
           <!-- Имя / Фамилия -->
           <div class="user_name flex flex-col justify-center">
-            <span class="text-lg font-semibold">Имя Фамилия</span>
-            <span class="text-sm text-gray-600">Пользователь</span>
+            <span
+              id="profile-login"
+              class="text-sm text-gray-600"
+            >
+              Загрузка...
+            </span>
+
+            <span
+              id="profile-fullname"
+              class="text-lg font-semibold"
+            >
+              Имя Фамилия
+            </span>
           </div>
 
         </div>
@@ -100,6 +140,18 @@ export function renderProfile(main_box) {
     </div>
   `;
 
+const userInfo = main_box.querySelector(".user_info");
+
+userInfo.addEventListener("click", (e) => {
+  e.stopPropagation(); // ⛔ не даём событию дойти до main_box
+  userInfoEdit();
+});
+
+loadProfile(main_box); 
+document.addEventListener("profile-updated", () => {
+  loadProfile(main_box);
+});
+  
 main_box.onclick = null;
 
 main_box.addEventListener("click", (e) => {
@@ -110,9 +162,10 @@ main_box.addEventListener("click", (e) => {
     showLogoutConfirm(async () => {
       await logoutRequest();
       main_box.innerHTML = "";
-      location.reload();
+      window.location.hash = "sale"; // 👈 ТОЛЬКО hash
     });
   }
+
 
   if (action === "switch-user") {
     showLogoutConfirm(async () => {

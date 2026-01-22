@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, field_validator
 import re
+from typing import Optional
 
 class RegisterRequest(BaseModel):
     login: str = Field(min_length=3, max_length=64)
@@ -32,3 +33,12 @@ class LoginRequest(BaseModel):
     password: str = Field(min_length=6)
     remember_me: bool = False
 
+class ProfileResponse(BaseModel):
+    login: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+
+
+class ProfileUpdateRequest(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
