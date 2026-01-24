@@ -1,23 +1,39 @@
 import "./style.css";
 import { showAuthModal } from "./auth/auth_btn.js";
 import { renderProfile } from "./profile/profile.js";
-import {API_URL} from "./config.js";
+import { API_URL } from "./config.js";
 import { renderSale } from "./sale/sale.js";
 import { renderCatalog } from "./catalog/catalog.js";
 import { renderCart } from "./cart/cart.js";
 
 const main_box = document.getElementById("main_box");
 
-// === страницы (пока фоновые) ===
-const pages = {
-  sale: "bg-white",
-  catalog: "bg-green-500",
-  cart: "bg-yellow-500",
-};
+let authInProgress = false;
 
-// === универсальная смена страницы ===
-function setPage(page) {
-  window.location.hash = page;
+// === 🔐 ПРОВЕРКА АВТОРИЗАЦИИ ===
+async function requireAuth(onSuccess) {
+  if (authInProgress) return;
+  authInProgress = true;
+
+  const res = await fetch(`${API_URL}/auth/check`, {
+    credentials: "include",
+  });
+
+  const data = await res.json();
+
+  if (data.authenticated) {
+    authInProgress = false;
+    onSuccess();
+  } else {
+    showAuthModal(() => {
+      authInProgress = false;
+      onSuccess();
+    });
+  }
+}
+
+// === РЕНДЕР СТРАНИЦ ===
+function renderPage(page) {
   main_box.innerHTML = "";
 
   switch (page) {
@@ -42,42 +58,18 @@ function setPage(page) {
   }
 }
 
-
-
-// === ПРОФИЛЬ ===
-function openProfilePage() {
-  renderProfile(main_box);
-}
-
-
-// === 🔐 ЕДИНАЯ ПРОВЕРКА АВТОРИЗАЦИИ ===
-async function requireAuth(onSuccess) {
-  const res = await fetch(`${API_URL}/auth/check`, {
-    credentials: "include",
-  });
-
-  const data = await res.json();
-
-  if (data.authenticated) {
-    onSuccess();
-  } else {
-    showAuthModal(onSuccess);
-  }
-}
-
-// === НАВИГАЦИЯ ===
-document.querySelectorAll(".nav-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const page = btn.dataset.page;
-    setPage(page);
-  });
-});
-
-
+// === НАВИГАЦИЯ ПО HASH ===
 function initPageFromUrl() {
   const page = window.location.hash.replace("#", "") || "sale";
-  setPage(page);
+  renderPage(page);
 }
+
+// === КНОПКИ НАВИГАЦИИ ===
+document.querySelectorAll(".nav-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    window.location.hash = btn.dataset.page;
+  });
+});
 
 window.addEventListener("hashchange", initPageFromUrl);
 initPageFromUrl();

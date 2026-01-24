@@ -1,0 +1,1846 @@
+{
+  "non_alco": {
+    "water": {
+      "simple": {
+        "Тассай газ 0,5": {
+          "size": 0.5,
+          "weight": 0.5,
+          "cost": 1,
+          "id": 137,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай газ 1,0": {
+          "size": 1,
+          "weight": 1,
+          "cost": 1,
+          "id": 138,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай газ 1,5": {
+          "size": 1.5,
+          "weight": 1.5,
+          "cost": 1,
+          "id": 139,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай негаз 0,5": {
+          "size": 0.5,
+          "weight": 0.5,
+          "cost": 1,
+          "id": 140,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай негаз 1,0": {
+          "size": 1,
+          "weight": 1,
+          "cost": 1,
+          "id": 141,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай негаз 1,5": {
+          "size": 1.5,
+          "weight": 1.5,
+          "cost": 1,
+          "id": 142,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай негаз 0,777": {
+          "size": 0.777,
+          "weight": 0.777,
+          "cost": 1,
+          "id": 143,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай газ 0,777": {
+          "size": 0.777,
+          "weight": 0.777,
+          "cost": 1,
+          "id": 144,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай 5,0": {
+          "size": 5,
+          "weight": 5,
+          "cost": 1,
+          "id": 145,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай Emerald газ 0,75 стекло": {
+          "size": 0.75,
+          "weight": 0.75,
+          "cost": 1,
+          "id": 146,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай Excellent негаз 0,75 стекло": {
+          "size": 0.75,
+          "weight": 0.75,
+          "cost": 1,
+          "id": 147,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай газ 0,25 стекл": {
+          "size": 0.25,
+          "weight": 0.25,
+          "cost": 1,
+          "id": 148,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай газ 0,5 стекл": {
+          "size": 0.5,
+          "weight": 0.5,
+          "cost": 1,
+          "id": 149,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай негаз 0,25 стекл": {
+          "size": 0.25,
+          "weight": 0.25,
+          "cost": 1,
+          "id": 150,
+          "factory": "Юникс",
+          "image": ""
+        },
+        "Тассай негаз 0,5 стекл": {
+          "size": 0.5,
+          "weight": 0.5,
+          "cost": 1,
+          "id": 151,
+          "factory": "Юникс",
+          "image": ""
+        }
+      },
+      "tasty": {
+        "Тассай клубника 0,5 негаз": {
+          "size": 0.5,
+          "weight": 0.5,
+          "cost": 1,
+          "id": 107,
+          "factory": "Юникс Beverage",
+          "image": ""
+        },
+        "Тассай лимон 0,5 негаз": {
+          "size": 0.5,
+          "weight": 0.5,
+          "cost": 1,
+          "id": 108,
+          "factory": "Юникс Beverage",
+          "image": ""
+        },
+        "Тассай лимон 1,0 газ": {
+          "size": 1,
+          "weight": 1,
+          "cost": 1,
+          "id": 109,
+          "factory": "Юникс Beverage",
+          "image": ""
+        },
+        "Тассай лимон 1,0 негаз": {
+          "size": 1,
+          "weight": 1,
+          "cost": 1,
+          "id": 110,
+          "factory": "Юникс Beverage",
+          "image": ""
+        },
+        "Тассай малина 1,0 негаз": {
+          "size": 1,
+          "weight": 1,
+          "cost": 1,
+          "id": 111,
+          "factory": "Юникс Beverage",
+          "image": ""
+        },
+        "Тассай манго-персик 1,0 негаз": {
+          "size": 1,
+          "weight": 1,
+          "cost": 1,
+          "id": 112,
+          "factory": "Юникс Beverage",
+          "image": ""
+        }
+      }
+    },
+    "jucie": {
+      "СОЧНАЯ ДОЛИНА Нектар бананово -яблочный сок, упаковка 1 л.": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 41,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "СОЧНАЯ ДОЛИНА вишневый нектар упаковка 1 л.": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 42,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "Вишня нектар PRO100SOK Prizma 0,95 л": {
+        "size": 0.95,
+        "weight": 0.95,
+        "cost": 1,
+        "id": 43,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "VIKO апельсиновый сок, упаковка 1 л.": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 44,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "VIKO яблочный сок, упаковка 1 л.": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 45,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "СОЧНАЯ ДОЛИНА яблочный сок, упаковка 1л": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 46,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "СОЧНАЯ ДОЛИНА томатный сок, упаковка 1л": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 47,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "СОЧНАЯ ДОЛИНА гранатовый нектар, упаковка 1л": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 48,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "СОЧНАЯ ДОЛИНА мультифруктовый нектар, упаковка 1л": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 49,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "СОЧНАЯ ДОЛИНА ананасовый нектар, упаковка 1л": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 50,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "СОЧНАЯ ДОЛИНА апельсиновый нектар, упаковка 1л": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 51,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "VIKO томатный сок, упаковка 1л": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 52,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "VIKO Мультифрукт сок, упаковка 1л": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 53,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "PRO100SOK Яблочный нектар Prizma 0,95 л": {
+        "size": 0.95,
+        "weight": 0.95,
+        "cost": 1,
+        "id": 54,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "PRO100SOK Бананово-клубнично-яблочный напиток со вкусом БАБЛ ГАМ 0,2 mid": {
+        "size": 0.2,
+        "weight": 0.2,
+        "cost": 1,
+        "id": 55,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "PRO100SOK Мультифруктовый напиток 0,2 mid": {
+        "size": 0.2,
+        "weight": 0.2,
+        "cost": 1,
+        "id": 56,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "СОЧНАЯ ДОЛИНА яблочный сок, упаковка 0,2 л": {
+        "size": 0.2,
+        "weight": 0.2,
+        "cost": 1,
+        "id": 57,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "СОЧНАЯ ДОЛИНА яблочно-банановый сок, упаковка 0,2 л": {
+        "size": 0.2,
+        "weight": 0.2,
+        "cost": 1,
+        "id": 58,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "СОЧНАЯ ДОЛИНА мультифруктовый нектар, упаковка 0,2 л": {
+        "size": 0.2,
+        "weight": 0.2,
+        "cost": 1,
+        "id": 59,
+        "factory": "Natural juice",
+        "image": ""
+      },
+      "Manana Orange 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 198,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Manana TropicMIX 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 199,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Manana Вишня 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 200,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Manana Гранат 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 201,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Manana Яблоко 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 202,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "PRO100SOK Мультифрукт напиток сокосодержащий Prizma 0,95 л": {
+        "size": 0.95,
+        "weight": 0.95,
+        "cost": 1,
+        "id": 217,
+        "factory": "Natural juice",
+        "image": ""
+      }
+    },
+    "vodka": {
+      "Not Vodka Rye 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 60,
+        "factory": "ЛВЗ Белалко",
+        "image": ""
+      },
+      "Not Vodka Wheat 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 61,
+        "factory": "ЛВЗ Белалко",
+        "image": ""
+      }
+    },
+    "lemonade": {
+      "Jumbo Cola 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 117,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Jumbo Cola 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 118,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Jumbo Cola 1,5": {
+        "size": 1.5,
+        "weight": 1.5,
+        "cost": 1,
+        "id": 119,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Jumbo Cola 0,45 ж/б": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 120,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Jumbo Cola 2,0_2026": {
+        "size": 2,
+        "weight": 2,
+        "cost": 1,
+        "id": 121,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Jumbo Cola 2,5": {
+        "size": 2.5,
+        "weight": 2.5,
+        "cost": 1,
+        "id": 122,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Granato 1,5": {
+        "size": 1.5,
+        "weight": 1.5,
+        "cost": 1,
+        "id": 123,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Green Tarkhun 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 124,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Green Tarkhun 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 125,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Green Tarkhun 1,5": {
+        "size": 1.5,
+        "weight": 1.5,
+        "cost": 1,
+        "id": 126,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Orange 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 127,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Orange 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 128,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Orange 1,5": {
+        "size": 1.5,
+        "weight": 1.5,
+        "cost": 1,
+        "id": 129,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Top Lemonade 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 130,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Top Lemonade 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 131,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Top Lemonade 1,5": {
+        "size": 1.5,
+        "weight": 1.5,
+        "cost": 1,
+        "id": 132,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Top Lemonade 0,45 жб": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 133,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Top Lemonade 2,0_2026": {
+        "size": 2,
+        "weight": 2,
+        "cost": 1,
+        "id": 134,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Granato 2,0": {
+        "size": 2,
+        "weight": 2,
+        "cost": 1,
+        "id": 135,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Top Lemonade 2,5": {
+        "size": 2.5,
+        "weight": 2.5,
+        "cost": 1,
+        "id": 136,
+        "factory": "Юникс Beverage",
+        "image": ""
+      }
+    },
+    "tea": {
+      "Зеленый чай ананас-маракуйя 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 203,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Зеленый чай ананас-маракуйя 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 204,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Зеленый чай ананас-маракуйя 1,5": {
+        "size": 1.5,
+        "weight": 1.5,
+        "cost": 1,
+        "id": 205,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Зеленый чай с лимоном 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 206,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Зеленый чай с лимоном 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 207,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Черный чай манго-ананас 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 208,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Черный чай манго-ананас 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 209,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Черный чай с лесн ягодами 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 210,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Черный чай с лесн ягодами 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 211,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Черный чай с лимоном 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 212,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Черный чай с персиком 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 213,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Черный чай с персиком 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 214,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Зеленый чай персик-ромашка 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 215,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Зеленый чай персик-ромашка 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 216,
+        "factory": "Юникс Beverage",
+        "image": ""
+      }
+    },
+    "energetik": {
+      "Tassay Energy 0,45 жб": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 225,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Tassay Granat 0,45 жб": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 226,
+        "factory": "Юникс Beverage",
+        "image": ""
+      },
+      "Tassay Popcorn 0,45 жб": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 227,
+        "factory": "Юникс Beverage",
+        "image": ""
+      }
+    }
+  },
+  "alco": {
+    "beer": {
+      "Балтика-0 Нефильтрованное Пшеничное банка 0.45 в вакууме 0.45x24": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 171,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Балтика Cooler Светлое бут. 0.47 в вакууме 0.47x20": {
+        "size": 0.47,
+        "weight": 0.47,
+        "cost": 1,
+        "id": 172,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Пиво Балтика Cooler Светлое банка 0.45 в вакууме 0.45x24": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 173,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Балтика-7 0,9 банка": {
+        "size": 0.9,
+        "weight": 0.9,
+        "cost": 1,
+        "id": 174,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Балтика-0 банка 0.45 в вакууме 0.45x24": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 175,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Балтика-3 банка 0.45 в вакууме 0.45x24": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 176,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Пиво Балтика №7 в вакууме 0.5 0.5x20": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 177,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Балтика-7 банка 0.45 в вакууме 0.45x24": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 178,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Пиво Балтика №3 в вакууме 0.5 0.5x20": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 179,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Пиво Балтика №0, Грейпфрут банка 0,33л": {
+        "size": 0.33,
+        "weight": 0.33,
+        "cost": 1,
+        "id": 180,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Пиво Балтика №5 ж/б 0,45": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 181,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Пиво Балтика Крепкое Легендарное №9 банка 0,45л": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 182,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Пиво Балтика Крепкое Легендарное №9, банка 0,9л": {
+        "size": 0.9,
+        "weight": 0.9,
+        "cost": 1,
+        "id": 183,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Пиво Балтика Крепкое Легендарное №9, бутылка 0,5л": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 184,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Пиво Вольный Волк Банка 0,45л": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 185,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Балтика №7 Мягкое 0,45 ж/б": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 186,
+        "factory": "Балтика",
+        "image": ""
+      },
+      "Пиво Шымкентское Юбилейное бутылка 0,45л": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 187,
+        "factory": "ТОО Шымкентпиво",
+        "image": ""
+      },
+      "Пиво Шымкентское Pilsner Классическое стекло 0,45": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 188,
+        "factory": "Шымкентский ПЗ",
+        "image": ""
+      },
+      "Шымкентское Мягкое Свежее, светлое 0,45 стекло": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 189,
+        "factory": "Шымкентский ПЗ",
+        "image": ""
+      },
+      "Шымкентское крепкое в ст/бутыл 0,45": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 190,
+        "factory": "Шымкентский ПЗ",
+        "image": ""
+      },
+      "Шымкентское Жигулевское в ст/бутылке 0,45": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 191,
+        "factory": "Шымкентский ПЗ",
+        "image": ""
+      },
+      "Шымкентское Хикари 0,45 стекло": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 192,
+        "factory": "Шымкентский ПЗ",
+        "image": ""
+      },
+      "Пиво Шымкентское Stuttgart Premium 0,45 стекло": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 193,
+        "factory": "Шымкентский ПЗ",
+        "image": ""
+      }
+    },
+    "wine": {
+      "Fiorelli Fragolino Bianco 0.75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 37,
+        "factory": "TOSO S.p.A",
+        "image": ""
+      },
+      "Fiorelli Fragolino Rosso 0.75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 38,
+        "factory": "TOSO S.p.A",
+        "image": ""
+      },
+      "Milagro Toro Cabernet Sauvignon красное полусладкое 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 39,
+        "factory": "Дионис",
+        "image": ""
+      },
+      "Milagro Toro Merlot красное полусладкое 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 40,
+        "factory": "Дионис",
+        "image": ""
+      },
+      "BUS 9 Red Semidry (POR) 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 75,
+        "factory": "Wine Radar S.L.",
+        "image": ""
+      },
+      "BUS 9 White Semidry (POR) 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 76,
+        "factory": "Wine Radar S.L.",
+        "image": ""
+      },
+      "CATA NOBILIS Red Dry (ESP) 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 77,
+        "factory": "Wine Radar S.L.",
+        "image": ""
+      },
+      "JANELA BRANCA Lisboa Red Dry (POR) 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 78,
+        "factory": "Wine Radar S.L.",
+        "image": ""
+      },
+      "JANELA BRANCA Vinho Verde White Semidry (POR) 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 79,
+        "factory": "Wine Radar S.L.",
+        "image": ""
+      },
+      "MADAME GARCIA White Dry (ESP) 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 80,
+        "factory": "Wine Radar S.L.",
+        "image": ""
+      },
+      "MARQUES DE CAMPO NUBLE Red Dry (ESP) 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 81,
+        "factory": "Wine Radar S.L.",
+        "image": ""
+      },
+      "MARQUES DE VALDECATE Sauvignon White Dry (ESP) 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 82,
+        "factory": "Wine Radar S.L.",
+        "image": ""
+      },
+      "MARQUES DE VALDECATE Verdejo White Dry (ESP) 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 83,
+        "factory": "Wine Radar S.L.",
+        "image": ""
+      },
+      "RUMBON Red Semisweet (POR) 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 84,
+        "factory": "Wine Radar S.L.",
+        "image": ""
+      },
+      "RUMBON White Semisweet (POR) 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 85,
+        "factory": "Wine Radar S.L.",
+        "image": ""
+      },
+      "Алазанская долина белое WM 0.75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 86,
+        "factory": "Wine Man",
+        "image": ""
+      },
+      "Алазанская долина красное WM 0.75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 87,
+        "factory": "Wine Man",
+        "image": ""
+      },
+      "Пиросмани белое WM 0.75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 88,
+        "factory": "Wine Man",
+        "image": ""
+      },
+      "Пиросмани красное WM 0.75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 89,
+        "factory": "Wine Man",
+        "image": ""
+      },
+      "Саперави красное WM 0.75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 90,
+        "factory": "Wine Man",
+        "image": ""
+      },
+      "Цинандали белое WM 0.75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 91,
+        "factory": "Wine Man",
+        "image": ""
+      },
+      "Bolgrad Blanc Select белое 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 94,
+        "factory": "ООО Алколайн",
+        "image": ""
+      },
+      "Bolgrad Muscat Select белое 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 95,
+        "factory": "ООО Алколайн",
+        "image": ""
+      },
+      "Bolgrad Muscat Select красное 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 96,
+        "factory": "ООО Алколайн",
+        "image": ""
+      },
+      "Bolgrad Granato Rosso красное 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 97,
+        "factory": "ООО Алколайн",
+        "image": ""
+      },
+      "Bolgrad Chateu De Vin белое 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 98,
+        "factory": "ООО Алколайн",
+        "image": ""
+      },
+      "Bolgrad Bon Coupage белое 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 99,
+        "factory": "ООО Алколайн",
+        "image": ""
+      },
+      "Bolgrad Chateu De Vin белое 1,5": {
+        "size": 1.5,
+        "weight": 1.5,
+        "cost": 1,
+        "id": 100,
+        "factory": "ООО Алколайн",
+        "image": ""
+      },
+      "Bolgrad Chateu De Vin красное 1,5": {
+        "size": 1.5,
+        "weight": 1.5,
+        "cost": 1,
+        "id": 101,
+        "factory": "ООО Алколайн",
+        "image": ""
+      },
+      "Bolgrad VS 0,5": {
+        "size": 1.5,
+        "weight": 1.5,
+        "cost": 1,
+        "id": 102,
+        "factory": "ООО Алколайн",
+        "image": ""
+      },
+      "Bolgrad VVSOP 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 103,
+        "factory": "ООО Алколайн",
+        "image": ""
+      },
+      "Кабуки Малина 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 113,
+        "factory": "Кабуки",
+        "image": ""
+      },
+      "Кабуки Черешня Лимон 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 114,
+        "factory": "Кабуки",
+        "image": ""
+      },
+      "Кабуки Белая Слива 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 115,
+        "factory": "Кабуки",
+        "image": ""
+      },
+      "Кабуки Красная Слива 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 116,
+        "factory": "Кабуки",
+        "image": ""
+      },
+      "Белая Лоза Казахстанская Рецептура 28 0,75": {
+        "size": 0.75,
+        "weight": 0.75,
+        "cost": 1,
+        "id": 220,
+        "factory": "ТОО Asian BC",
+        "image": ""
+      },
+      "Вино Белая Лоза Казахстанская 0,7л 17% 12-мест": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 223,
+        "factory": "ТОО Asian BC",
+        "image": ""
+      }
+    },
+    "vodka": {
+      "TAZA classic 0,25 л ANG": {
+        "size": 0.25,
+        "weight": 0.25,
+        "cost": 1,
+        "id": 1,
+        "factory": "ANG",
+        "image": ""
+      },
+      "TAZA classic 0,5 л ANG": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 2,
+        "factory": "ANG",
+        "image": ""
+      },
+      "Зын 0,5 л ANG": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 3,
+        "factory": "ANG",
+        "image": ""
+      },
+      "Базар жок 0,7 ANG": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 4,
+        "factory": "ANG",
+        "image": ""
+      },
+      "Базар жок 0,45 ANG": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 5,
+        "factory": "ANG",
+        "image": ""
+      },
+      "Рюмочкин 0,45 ANG": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 6,
+        "factory": "ANG",
+        "image": ""
+      },
+      "Базар жок 0,2 ANG": {
+        "size": 0.2,
+        "weight": 0.2,
+        "cost": 1,
+        "id": 7,
+        "factory": "ANG",
+        "image": ""
+      },
+      "Сарбаз 0,45 ANG": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 8,
+        "factory": "ANG",
+        "image": ""
+      },
+      "HOMAY 0,5 л.38% (прозрачная)": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 9,
+        "factory": "ANG",
+        "image": ""
+      },
+      "HOMAY PREMIUM 0,5 л.38% (матовая)": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 10,
+        "factory": "ANG",
+        "image": ""
+      },
+      "Dastan 0,45": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 15,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Dastan 0,65": {
+        "size": 0.65,
+        "weight": 0.65,
+        "cost": 1,
+        "id": 16,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Jysan 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 17,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Jysan имбирь 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 18,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Samruk Batyl (красный) 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 19,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Samruk Nagyz (синий) 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 20,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Горыныч Огненный 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 21,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Зерно 0,2": {
+        "size": 0.2,
+        "weight": 0.2,
+        "cost": 1,
+        "id": 22,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Зерно 0,5 Б": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 23,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Зерно 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 24,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Зерно Lux 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 25,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Зерно Натуральная 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 26,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Зерно Озимая 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 27,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Зерно Озимая 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 28,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Зерно Ржаная 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 29,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Зерно Ржаная 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 30,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Синий Гусь 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 31,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Топливо 0,45": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 32,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Топливо 0,65": {
+        "size": 0.65,
+        "weight": 0.65,
+        "cost": 1,
+        "id": 33,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Parliament 0.5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 34,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Parliament 0.7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 35,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Aidahar 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 36,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Romanov (высокая) 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 62,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Romanov (высокая) 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 63,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Romanov Alexander I 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 64,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Romanov (высокая) 1,75": {
+        "size": 1.75,
+        "weight": 1.75,
+        "cost": 1,
+        "id": 65,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Romanov Санкт-Петербург 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 66,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Romanov Санкт-Петербург 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 67,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Romanov Alexander I 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 68,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Stoli 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 69,
+        "factory": "Spirits Limited",
+        "image": ""
+      },
+      "Stoli 0,7": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 70,
+        "factory": "Spirits Limited",
+        "image": ""
+      },
+      "TAZA Original 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 92,
+        "factory": "ТОО Крафт трейд",
+        "image": ""
+      },
+      "Водка Сарбаз 0,25": {
+        "size": 0.25,
+        "weight": 0.25,
+        "cost": 1,
+        "id": 93,
+        "factory": "ТОО Крафт трейд",
+        "image": ""
+      },
+      "Великий Хан 0.7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 104,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Великий Хан 0.5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 105,
+        "factory": "ТОО БЭВЭР",
+        "image": ""
+      },
+      "Nemiroff De Luxe 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 152,
+        "factory": "ЛВН Лимитед",
+        "image": ""
+      },
+      "Nemiroff De Luxe 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 153,
+        "factory": "ЛВН Лимитед",
+        "image": ""
+      },
+      "Nemiroff De Luxe медовая с перцем 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 154,
+        "factory": "ЛВН Лимитед",
+        "image": ""
+      },
+      "Nemiroff De Luxe медовая с перцем 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 155,
+        "factory": "ЛВН Лимитед",
+        "image": ""
+      },
+      "Nemiroff Деликат Мягкая 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 156,
+        "factory": "ЛВН Лимитед",
+        "image": ""
+      },
+      "Nemiroff Деликат Мягкая 1,0": {
+        "size": 1,
+        "weight": 1,
+        "cost": 1,
+        "id": 157,
+        "factory": "ЛВН Лимитед",
+        "image": ""
+      },
+      "Nemiroff медовая с перцем 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 158,
+        "factory": "ЛВН Лимитед",
+        "image": ""
+      },
+      "Nemiroff медовая с перцем 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 159,
+        "factory": "ЛВН Лимитед",
+        "image": ""
+      },
+      "Nemiroff пшеница отборная 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 160,
+        "factory": "ЛВН Лимитед",
+        "image": ""
+      },
+      "Nemiroff Lex Premium 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 161,
+        "factory": "ЛВН Лимитед",
+        "image": ""
+      },
+      "Nemiroff Клюква 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 162,
+        "factory": "ЛВН Лимитед",
+        "image": ""
+      },
+      "Finka (росс) 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 163,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Finka (росс) 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 164,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Finka Дикая Морошка (росс) 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 165,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Finka Дикая Морошка (росс) 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 166,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Finka Клюква (росс) 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 167,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Белка и Стрелка 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 168,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Ветер 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 169,
+        "factory": "Пермь Алко",
+        "image": ""
+      },
+      "Жменя Медовая с перцем 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 170,
+        "factory": "Слав прод фуд",
+        "image": ""
+      },
+      "Мягкий Знак Классик 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 194,
+        "factory": "Питейный Дом",
+        "image": ""
+      },
+      "Мягкий Знак Премиум 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 195,
+        "factory": "Питейный Дом",
+        "image": ""
+      },
+      "Крамбамбуля Заповедная 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 196,
+        "factory": "Слав прод фуд",
+        "image": ""
+      },
+      "Крамбамбуля Хлебная 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 197,
+        "factory": "Слав прод фуд",
+        "image": ""
+      },
+      "Кок жайляу 0,18 л": {
+        "size": 0.18,
+        "weight": 0.18,
+        "cost": 1,
+        "id": 219,
+        "factory": "ТОО Asian BC",
+        "image": ""
+      },
+      "Водка Морозная 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 224,
+        "factory": "ТОО Asian BC",
+        "image": ""
+      }
+    },
+    "other": {
+      "Брэнди Чача Русская 40% 0.5л": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 11,
+        "factory": "ТОО Asian BC",
+        "image": ""
+      },
+      "Коньяк Казахстан LUXURY PRODUCT 5-ти летний 0,18": {
+        "size": 0.18,
+        "weight": 0.18,
+        "cost": 1,
+        "id": 12,
+        "factory": "ТОО Asian BC",
+        "image": ""
+      },
+      "Коньяк Казахстан LUXURY PRODUCT 5-ти летний 0,45": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 13,
+        "factory": "ТОО Asian BC",
+        "image": ""
+      },
+      "Казакстан ВК Export 5-ти летний 0,5": {
+        "size": 0.5,
+        "weight": 0.5,
+        "cost": 1,
+        "id": 14,
+        "factory": "ТОО Asian BC",
+        "image": ""
+      },
+      "Whyte & Mackay Triple Matured 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 71,
+        "factory": "Whyte & Mackay",
+        "image": ""
+      },
+      "Claymore 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 72,
+        "factory": "Whyte & Mackay",
+        "image": ""
+      },
+      "John Barr Finest 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 73,
+        "factory": "Whyte & Mackay",
+        "image": ""
+      },
+      "John Barr Reserve 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 74,
+        "factory": "Whyte & Mackay",
+        "image": ""
+      },
+      "Famille Romanov VS 0,7": {
+        "size": 0.7,
+        "weight": 0.7,
+        "cost": 1,
+        "id": 106,
+        "factory": "Maison Prunier",
+        "image": ""
+      },
+      "Коньяк Казахстан 3-ех летний 0,18": {
+        "size": 0.18,
+        "weight": 0.18,
+        "cost": 1,
+        "id": 218,
+        "factory": "ТОО Asian BC",
+        "image": ""
+      },
+      "Kazakhstan Gold 5 звезд 0,45 л": {
+        "size": 0.45,
+        "weight": 0.45,
+        "cost": 1,
+        "id": 221,
+        "factory": "ТОО Asian BC",
+        "image": ""
+      },
+      "Коньяк Kazakhstan Gold 5-ти летний 40% 0,18": {
+        "size": 0.18,
+        "weight": 0.18,
+        "cost": 1,
+        "id": 222,
+        "factory": "ТОО Asian BC",
+        "image": ""
+      }
+    }
+  }
+}

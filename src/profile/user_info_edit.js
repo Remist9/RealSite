@@ -9,6 +9,8 @@ export function userInfoEdit() {
   sheet.className = `
     w-full bg-white rounded-t-2xl
     min-h-[50vh] max-h-[80vh]
+    mx-auto
+    lg:max-w-3xl
     p-4
     transition-transform duration-300
     translate-y-0
@@ -16,7 +18,7 @@ export function userInfoEdit() {
   `;
 
   sheet.innerHTML = `
-    <div class="w-10 h-1 bg-gray-300 rounded mx-auto mb-3"></div>
+    <div class="w-10 h-1 bg-gray-300 rounded mx-auto mb-3 "></div>
 
     <h2 class="text-lg font-semibold text-center mb-6">
       Редактирование профиля

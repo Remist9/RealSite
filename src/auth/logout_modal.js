@@ -1,4 +1,5 @@
 export function showLogoutConfirm(onConfirm) {
+  
   const overlay = document.createElement("div");
 
   overlay.className =
