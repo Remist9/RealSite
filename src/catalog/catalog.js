@@ -3,6 +3,8 @@ import { createProductCard } from "./product_card.js";
 
 const CATALOG_FILTER_KEY = "catalog_selected_categories";
 
+window.isCatalogCategoriesOpen = false;
+
 const CATEGORIES = [
   { id: "water", label: "Вода", group: "non_alco" },
   { id: "juice", label: "Сок", group: "non_alco" },
@@ -192,7 +194,11 @@ export function renderCatalog(main_box) {
   // открыть / закрыть список
   menuBtn.addEventListener("click", (e) => {
     e.stopPropagation();
+
+    const willOpen = categoriesBox.classList.contains("hidden");
+
     categoriesBox.classList.toggle("hidden");
+    window.isCatalogCategoriesOpen = willOpen;
   });
 
   // выбор категории
@@ -216,12 +222,11 @@ export function renderCatalog(main_box) {
 
   // клик вне — закрыть
   document.addEventListener("click", () => {
-    if (!categoriesBox.classList.contains("hidden")) {
-      categoriesBox.classList.add("hidden");
+    if (categoriesBox.classList.contains("hidden")) return;
 
-      // 🔥 вот здесь ОДИН запрос
-      updateCatalog();
-    }
+    categoriesBox.classList.add("hidden");
+    window.isCatalogCategoriesOpen = false;
+    updateCatalog();
   });
 
   categoriesBox.addEventListener("click", (e) => {
@@ -273,7 +278,17 @@ export function renderCatalog(main_box) {
 
     Object.entries(items).forEach(([title, product]) => {
       const cost = product.cost ?? "—";
-      const card = createProductCard(title, cost);
+      const productData = {
+        title,
+        cost: product.cost ?? "—",
+        description: product.description ?? "",
+        image: product.image || null,
+        id: product.id,
+        factory: product.factory,
+        size: product.size,
+      };
+
+      const card = createProductCard(productData);
 
       grid.appendChild(card);
     });

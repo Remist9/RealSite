@@ -1,57 +1,48 @@
-export function createProductCard(title, cost) {
+import { showProductCardFull } from "./product_card_full.js";
+
+export function createProductCard(product) {
+  const { title, cost } = product;
   const card = document.createElement("div");
 
+  card.dataset.productCard = "true";
+
   card.className = `
-    aspect-square
-    bg-white
-    rounded-lg
-    shadow
-    overflow-hidden
-    flex flex-col
+    aspect-square bg-white rounded-lg shadow
+    overflow-hidden flex flex-col
   `;
 
   card.innerHTML = `
-    <!-- TITLE -->
     <div class="px-2 py-1">
-      <span
-        class="text-xs font-medium text-gray-700 truncate block"
-        title="${title}"
-      >
+      <span class="text-xs font-medium truncate block">
         ${title}
       </span>
     </div>
 
-    <!-- IMAGE -->
     <div class="flex-1 bg-gray-100 flex items-center justify-center">
-      <span class="text-gray-300 text-xs">IMG</span>
+      IMG
     </div>
 
-    <!-- FOOTER -->
     <div class="h-10 px-2 flex items-center">
       <span class="text-sm font-semibold mx-auto">
         ${cost} ₸
       </span>
 
-      <button
-        class="
-          ml-auto
-          w-7 h-7
-          rounded-full
-          bg-green-500
-          text-white
-          flex items-center justify-center
-          text-lg
-          leading-none
-          hover:bg-green-600
-          active:scale-95
-          transition
-        "
-        title="Добавить в корзину"
-      >
+      <button class="add-btn ml-auto w-7 h-7 rounded-full bg-green-500 text-white">
         +
       </button>
     </div>
   `;
+
+  // ✅ ОДИН обработчик
+  card.addEventListener("click", () => {
+    if (window.isCatalogCategoriesOpen) return;
+    showProductCardFull(product);
+  });
+
+  // + не открывает карточку
+  card.querySelector(".add-btn").addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
 
   return card;
 }
