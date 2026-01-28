@@ -1,5 +1,8 @@
 import { fetchCatalogByCategories } from "./catalog_api.js";
 import { createProductCard } from "./product_card.js";
+import { fetchCart } from "../cart/cart_api.js";
+
+let cartItems = {};
 
 const CATALOG_FILTER_KEY = "catalog_selected_categories";
 
@@ -250,7 +253,7 @@ export function renderCatalog(main_box) {
     updateCatalog(); // отправит {}
   });
 
-  function updateCatalog() {
+  async function updateCatalog() {
     const payload = {};
 
     if (selectedCategories.alco.size) {
@@ -261,13 +264,25 @@ export function renderCatalog(main_box) {
       payload.non_alco = [...selectedCategories.non_alco];
     }
 
-    fetchCatalogByCategories(payload)
-      .then((data) => {
-        if (!data?.ok || !data.items) return;
+    try {
+      // 1️⃣ пробуем получить корзину
+      try {
+        const cart = await fetchCart();
+        cartItems = cart.items || {};
+      } catch {
+        // не авторизован — корзина пустая
+        cartItems = {};
+      }
 
-        renderCatalogItems(data.items);
-      })
-      .catch(() => {});
+      // 2️⃣ получаем каталог
+      const data = await fetchCatalogByCategories(payload);
+      if (!data?.ok || !data.items) return;
+
+      // 3️⃣ рендер
+      renderCatalogItems(data.items);
+    } catch (e) {
+      console.warn(e);
+    }
   }
 
   function renderCatalogItems(items) {
@@ -288,7 +303,11 @@ export function renderCatalog(main_box) {
         size: product.size,
       };
 
-      const card = createProductCard(productData);
+      const quantity = cartItems[product.id] ?? 0;
+
+      const card = createProductCard(productData, {
+        quantity,
+      });
 
       grid.appendChild(card);
     });

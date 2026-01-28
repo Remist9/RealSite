@@ -11,24 +11,24 @@ const main_box = document.getElementById("main_box");
 let authInProgress = false;
 
 // === 🔐 ПРОВЕРКА АВТОРИЗАЦИИ ===
+import { apiFetch } from "./api.js";
+
 async function requireAuth(onSuccess) {
   if (authInProgress) return;
   authInProgress = true;
 
-  const res = await fetch(`${API_URL}/auth/check`, {
-    credentials: "include",
-  });
-
-  const data = await res.json();
-
-  if (data.authenticated) {
-    authInProgress = false;
-    onSuccess();
-  } else {
-    showAuthModal(() => {
-      authInProgress = false;
+  try {
+    const data = await apiFetch(`${API_URL}/auth/check`);
+    if (data.authenticated) {
       onSuccess();
-    });
+    } else {
+      showAuthModal(onSuccess);
+    }
+  } catch (err) {
+    // сюда попадём только если что-то кроме 401
+    console.error(err);
+  } finally {
+    authInProgress = false;
   }
 }
 

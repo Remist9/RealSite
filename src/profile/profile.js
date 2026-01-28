@@ -53,15 +53,15 @@ function createProfileClickHandler(main_box) {
     }
 
     if (action === "switch-user") {
-  showLogoutConfirm(async () => {
-    await logoutRequest();
-    main_box.innerHTML = "";
+      showLogoutConfirm(async () => {
+        await logoutRequest();
+        main_box.innerHTML = "";
 
-    showAuthModal(() => {
-      renderProfile(main_box); // 🔥 ВОТ ЭТО КЛЮЧ
-    });
-  });
-}
+        showAuthModal(() => {
+          renderProfile(main_box); // 🔥 ВОТ ЭТО КЛЮЧ
+        });
+      });
+    }
   };
 }
 
@@ -157,7 +157,10 @@ export function renderProfile(main_box) {
   // profile-updated (1 раз за документ)
   if (!document._profileUpdatedHandler) {
     document._profileUpdatedHandler = () => onProfileUpdated(main_box);
-    document.addEventListener("profile-updated", document._profileUpdatedHandler);
+    document.addEventListener(
+      "profile-updated",
+      document._profileUpdatedHandler,
+    );
   }
 
   // загрузка данных

@@ -1,10 +1,13 @@
 import { showProductCardFull } from "./product_card_full.js";
+import { updateCart, fetchCart } from "../cart/cart_api.js";
 
-export function createProductCard(product) {
+function isCatalogLocked() {
+  return window.isCatalogCategoriesOpen === true;
+}
+
+export function createProductCard(product, { quantity = 0 } = {}) {
   const { title, cost } = product;
   const card = document.createElement("div");
-
-  card.dataset.productCard = "true";
 
   card.className = `
     aspect-square bg-white rounded-lg shadow
@@ -13,36 +16,105 @@ export function createProductCard(product) {
 
   card.innerHTML = `
     <div class="px-2 py-1">
-      <span class="text-xs font-medium truncate block">
-        ${title}
-      </span>
+      <span class="text-xs font-medium truncate block">${title}</span>
     </div>
 
     <div class="flex-1 bg-gray-100 flex items-center justify-center">
       IMG
     </div>
 
-    <div class="h-10 px-2 flex items-center">
-      <span class="text-sm font-semibold mx-auto">
-        ${cost} ₸
-      </span>
-
-      <button class="add-btn ml-auto w-7 h-7 rounded-full bg-green-500 text-white">
-        +
-      </button>
+    <div class="h-10 px-2 flex items-center" data-role="card-bottom">
+      <span class="text-sm font-semibold mx-auto">${cost} ₸</span>
+      <button class="add-btn ml-auto w-7 h-7 rounded-full bg-green-500 text-white">+</button>
     </div>
   `;
 
-  // ✅ ОДИН обработчик
+  const bottom = card.querySelector("[data-role='card-bottom']");
+  const addBtn = bottom.querySelector(".add-btn");
+
+  /* ---------- открытие полной карточки ---------- */
   card.addEventListener("click", () => {
     if (window.isCatalogCategoriesOpen) return;
     showProductCardFull(product);
   });
 
-  // + не открывает карточку
-  card.querySelector(".add-btn").addEventListener("click", (e) => {
+  /* ---------- первичное добавление ---------- */
+  addBtn.addEventListener("click", async (e) => {
     e.stopPropagation();
+
+    if (isCatalogLocked()) return;
+
+    try {
+      const res = await updateCart(product.id, +1);
+      renderQuantityControls(res.quantity);
+    } catch (e) {
+      console.warn(e.message);
+    }
   });
+
+  /* ---------- UI ---------- */
+  function renderQuantityControls(quantity) {
+    bottom.innerHTML = `
+      <div class="flex items-center w-full justify-between">
+        <button data-action="decrease"
+          class="w-7 h-7 rounded-full bg-gray-200 text-lg flex items-center justify-center">−</button>
+
+        <div data-role="quantity"
+          class="text-sm font-semibold text-gray-700">${quantity}</div>
+
+        <button data-action="increase"
+          class="w-7 h-7 rounded-full bg-green-500 text-white text-lg flex items-center justify-center">+</button>
+      </div>
+    `;
+  }
+
+  function restoreInitialControls() {
+    bottom.innerHTML = `
+    <span class="text-sm font-semibold mx-auto">${cost} ₸</span>
+    <button class="add-btn ml-auto w-7 h-7 rounded-full bg-green-500 text-white">+</button>
+  `;
+
+    const btn = bottom.querySelector(".add-btn");
+    if (!btn) return; // 🔒 защита от null
+
+    btn.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      if (isCatalogLocked()) return;
+
+      const res = await updateCart(product.id, +1);
+      renderQuantityControls(res.quantity);
+    });
+  }
+
+  /* ---------- делегирование + / - ---------- */
+  bottom.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    if (isCatalogLocked()) return;
+
+    const action = e.target.dataset.action;
+    if (!action) return;
+
+    const delta = action === "increase" ? +1 : -1;
+
+    try {
+      await updateCart(product.id, delta);
+
+      const cart = await fetchCart();
+      const quantity = cart.items?.[product.id] ?? 0;
+
+      if (quantity === 0) {
+        restoreInitialControls();
+      } else {
+        renderQuantityControls(quantity);
+      }
+    } catch (e) {
+      console.warn(e.message);
+    }
+  });
+
+  if (quantity > 0) {
+    renderQuantityControls(quantity);
+  }
 
   return card;
 }

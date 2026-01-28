@@ -1,32 +1,14 @@
 import { API_URL } from "../config.js";
+import { apiFetch } from "../api.js";
 
-export async function getMyProfile() {
-  const res = await fetch(`${API_URL}/profile/me`, {
-    method: "GET",
-    credentials: "include",
-  });
-
-  if (!res.ok) {
-    throw new Error("Не удалось загрузить профиль");
-  }
-
-  return res.json(); // { login: "oleg" }
+export function getMyProfile() {
+  return apiFetch(`${API_URL}/profile/me`);
 }
 
-export async function updateMyProfile(data) {
-  const res = await fetch(`${API_URL}/profile/me`, {
+export function updateMyProfile(data) {
+  return apiFetch(`${API_URL}/profile/me`, {
     method: "PATCH",
-    credentials: "include", // ⬅️ важно для cookie
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.detail || "Ошибка обновления профиля");
-  }
-
-  return res.json();
 }

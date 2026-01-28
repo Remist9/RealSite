@@ -20,3 +20,7 @@ export async function fetchCatalogByCategories(filters = {}) {
     throw err;
   }
 }
+
+export async function fetchCart() {
+  return apiFetch("/cart"); // { items: { [productId]: quantity } }
+}

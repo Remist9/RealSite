@@ -46,3 +46,11 @@ class ProfileUpdateRequest(BaseModel):
 class CatalogFilter(BaseModel):
     alco: Optional[List[str]] = None
     non_alco: Optional[List[str]] = None
+
+class UpdateCartRequest(BaseModel):
+    product_id: int
+    delta: int  # +1 или -1
+
+class CartResponse(BaseModel):
+    product_id: int
+    quantity: int
