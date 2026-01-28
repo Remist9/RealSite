@@ -1,4 +1,5 @@
 import { fetchCatalogByCategories } from "./catalog_api.js";
+import { createProductCard } from "./product_card.js";
 
 const CATALOG_FILTER_KEY = "catalog_selected_categories";
 
@@ -20,14 +21,14 @@ export function renderCatalog(main_box) {
     "flex-[11] bg-green-500 transition-colors duration-300 overflow-hidden";
 
   main_box.innerHTML = `
-    <div class="catalog-page flex flex-col h-full relative">
+    <div class="catalog-page flex flex-col h-full min-h-0 relative">
 
       <!-- HEADER -->
       <div
         class="
           catalog-header
+          h-12 shrink-0
           sticky top-0
-          w-full h-12
           bg-white
           border-b
           flex items-center gap-3
@@ -72,69 +73,74 @@ export function renderCatalog(main_box) {
       </div>
 
       <!-- CATEGORY DROPDOWN -->
-<div
-  class="
-    catalog-categories
-    absolute top-12 left-0
-    bg-white
-    border
-    rounded-md
-    shadow-md
-    hidden
-    z-10
-  "
->
-  <div class="flex">
+      <div
+        class="
+          catalog-categories
+          absolute top-12 left-0
+          bg-white
+          border
+          rounded-md
+          shadow-md
+          hidden
+          z-30
+        "
+      >
+        <div class="flex">
+          <div class="w-48">
+            <ul class="flex flex-col text-sm">
+              ${CATEGORIES.map(
+                (cat) => `
+                  <li
+                    class="category-item px-4 py-2 cursor-pointer hover:bg-gray-100"
+                    data-category="${cat.id}"
+                    data-group="${cat.group}"
+                  >
+                    ${cat.label}
+                  </li>
+                `,
+              ).join("")}
+            </ul>
+          </div>
 
-    <!-- LEFT: CATEGORIES -->
-    <div class="w-48">
-      <ul class="flex flex-col text-sm">
-        ${CATEGORIES.map(
-          (cat) => `
-    <li
-      class="category-item px-4 py-2 cursor-pointer hover:bg-gray-100"
-      data-category="${cat.id}"
-      data-group="${cat.group}"
-    >
-      ${cat.label}
-    </li>
-  `,
-        ).join("")}
-      </ul>
-    </div>
+          <div class="w-8 flex flex-col items-center justify-start pt-2">
+            <button
+              class="
+                reset-categories
+                text-xl
+                leading-none
+                text-gray-400
+                hover:text-red-600
+                transition-colors
+              "
+              title="Сбросить категории"
+            >
+              🔄
+            </button>
+          </div>
+        </div>
+      </div>
 
-<!-- RIGHT: ACTIONS -->
-<div class="w-8 flex flex-col items-center justify-start pt-2">
-  <button
+      <!-- CONTENT -->
+<div class="catalog-content flex-1 min-h-0 overflow-auto">
+  <div
     class="
-      reset-categories
-      text-xl
-      leading-none
-      text-gray-400
-      hover:text-red-600
-      transition-colors
+      catalog-grid
+      p-2
+      grid
+      gap-2
+      grid-cols-2
+      sm:grid-cols-3
+      md:grid-cols-4
     "
-    title="Сбросить категории"
   >
-    🔄
-  </button>
-</div>
 
-
-    </div>
 
   </div>
 </div>
 
 
-      <!-- CONTENT -->
-      <div class="catalog-content flex-1 overflow-auto"></div>
     </div>
   `;
-
-  /* =======================
-     CATEGORY LOGIC
-  ======================= */
 
   const menuBtn = main_box.querySelector(".catalog-menu");
   const categoriesBox = main_box.querySelector(".catalog-categories");
@@ -252,9 +258,25 @@ export function renderCatalog(main_box) {
 
     fetchCatalogByCategories(payload)
       .then((data) => {
-        console.log("Ответ от API:", data);
+        if (!data?.ok || !data.items) return;
+
+        renderCatalogItems(data.items);
       })
       .catch(() => {});
+  }
+
+  function renderCatalogItems(items) {
+    const grid = document.querySelector(".catalog-grid");
+    if (!grid) return;
+
+    grid.innerHTML = "";
+
+    Object.entries(items).forEach(([title, product]) => {
+      const cost = product.cost ?? "—";
+      const card = createProductCard(title, cost);
+
+      grid.appendChild(card);
+    });
   }
 
   updateCatalog();
