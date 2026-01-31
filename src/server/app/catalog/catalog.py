@@ -7,7 +7,6 @@ router = APIRouter()
 
 @router.post("/catalog/filter")
 def filter_catalog(filters: CatalogFilter):
-    print(filters)
     items = extract_items(filters)
 
     return {

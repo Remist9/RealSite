@@ -26,3 +26,9 @@ export function fetchCartRaw() {
 export function fetchCart() {
   return apiFetch(`${API_URL}/cart/cart`);
 }
+
+export function fetchOrder() {
+  return apiFetch(`${API_URL}/cart/order`, {
+    method: "POST",
+  });
+}

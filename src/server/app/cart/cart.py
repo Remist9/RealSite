@@ -4,6 +4,7 @@ from app.db import get_db
 from app.auth.session import get_current_user_id
 from app.schemas import CartResponse, UpdateCartRequest
 from app.catalog.catalog_index import CATALOG_BY_ID
+import json
 
 router = APIRouter(prefix="/cart", tags=["cart"])
 
@@ -11,7 +12,6 @@ router = APIRouter(prefix="/cart", tags=["cart"])
 @router.post("/update", response_model=CartResponse)
 def update_cart(data: UpdateCartRequest, request: Request):
     user_id = get_current_user_id(request)
-    print(data)
 
     if not (1 <= data.product_id <= 227):
         raise HTTPException(status_code=400, detail="Некорректный товар")
@@ -100,6 +100,8 @@ def get_cart(request: Request):
 
     rows = cur.fetchall()
 
+    print(rows)
+
     cur.close()
     conn.close()
 
@@ -150,6 +152,7 @@ def get_cart(request: Request):
     total_cart_cost = sum(i["total_cost"] for i in cart_items.values())
     total_cart_weight = sum(i["total_weight"] for i in cart_items.values())
     total_cart_size = sum(i["total_size"] for i in cart_items.values())
+    
 
     return {
         "items": cart_items,
@@ -159,3 +162,70 @@ def get_cart(request: Request):
             "total_size": total_cart_size,
         }
     }
+
+@router.post("/order")
+def create_order(request: Request):
+    user_id = get_current_user_id(request)
+
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("""
+            SELECT product_id, quantity
+            FROM active_cart
+            WHERE user_id = %s
+        """, (user_id,))
+
+        rows = cur.fetchall()
+
+        if not rows:
+            raise HTTPException(
+                status_code=400,
+                detail="Cart is empty"
+            )
+
+        items = []
+        total_cost = 0
+        total_weight = 0
+
+        for product_id, quantity in rows:
+            product = CATALOG_BY_ID.get(product_id)
+            if not product:
+                continue
+
+            total_cost += product["cost"] * quantity
+            total_weight += product["weight"] * quantity
+            items.append([product_id, quantity])
+
+        cur.execute("""
+            INSERT INTO active_orders (user_id, t_items, t_cost, t_weight)
+            VALUES (%s, %s::jsonb, %s, %s)
+            RETURNING id
+        """, (
+            user_id,
+            json.dumps(items),
+            total_cost,
+            total_weight
+        ))
+
+        order_id = cur.fetchone()[0]
+
+        cur.execute("""
+            DELETE FROM active_cart
+            WHERE user_id = %s
+        """, (user_id,))
+
+        conn.commit()
+
+        return {
+            "ok": True,
+            "order_id": order_id
+        }
+
+    finally:
+        cur.close()
+        conn.close()
