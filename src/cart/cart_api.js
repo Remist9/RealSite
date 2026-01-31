@@ -19,6 +19,10 @@ export function updateCart(productId, delta) {
   });
 }
 
+export function fetchCartRaw() {
+  return apiFetch(`${API_URL}/cart/raw`);
+}
+
 export function fetchCart() {
   return apiFetch(`${API_URL}/cart/cart`);
 }

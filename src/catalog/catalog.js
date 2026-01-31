@@ -1,6 +1,6 @@
 import { fetchCatalogByCategories } from "./catalog_api.js";
 import { createProductCard } from "./product_card.js";
-import { fetchCart } from "../cart/cart_api.js";
+import { fetchCartRaw } from "../cart/cart_api.js";
 
 let cartItems = {};
 
@@ -267,7 +267,7 @@ export function renderCatalog(main_box) {
     try {
       // 1️⃣ пробуем получить корзину
       try {
-        const cart = await fetchCart();
+        const cart = await fetchCartRaw();
         cartItems = cart.items || {};
       } catch {
         // не авторизован — корзина пустая

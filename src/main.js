@@ -46,7 +46,7 @@ function renderPage(page) {
       break;
 
     case "cart":
-      renderCart(main_box);
+      requireAuth(() => renderCart(main_box));
       break;
 
     case "profile":

@@ -1,6 +1,8 @@
-import { updateCart } from "../cart/cart_api.js";
+import { updateCart, fetchCartRaw } from "../cart/cart_api.js";
 
-export function showProductCardFull(product) {
+const QUICK_DELTAS = [5, 10];
+
+export async function showProductCardFull(product) {
   const { title, description, cost, image } = product;
 
   const overlay = document.createElement("div");
@@ -13,22 +15,20 @@ export function showProductCardFull(product) {
     mx-auto lg:max-w-3xl
     transition-transform duration-300
     translate-y-0
-    touch-pan-y
-    overflow-hidden
-    flex flex-col
+    overflow-hidden flex flex-col
   `;
 
   sheet.innerHTML = `
-    <div class="w-10 h-1 bg-gray-300 rounded mx-auto my-3 shrink-0"></div>
+    <div class="w-10 h-1 bg-gray-300 rounded mx-auto my-3"></div>
 
-    <div class="text-center mb-3 shrink-0 px-4">
-      <h2 class="text-lg font-semibold text-gray-800">${title}</h2>
+    <div class="text-center mb-3 px-4">
+      <h2 class="text-lg font-semibold">${title}</h2>
     </div>
 
     <div class="flex-1 overflow-auto px-4 pb-4">
       <div class="flex flex-col sm:flex-row gap-4">
 
-        <div class="sm:w-2/5 w-full aspect-3/4 bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden">
+        <div class="sm:w-2/5 aspect-3/4 bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden">
           ${
             image
               ? `<img src="${image}" class="w-full h-full object-cover" />`
@@ -41,7 +41,7 @@ export function showProductCardFull(product) {
             ${description || "Описание отсутствует"}
           </div>
 
-          <div class="bg-gray-100 rounded-xl p-4 text-center text-base font-semibold">
+          <div class="bg-gray-100 rounded-xl p-4 text-center font-semibold">
             ${cost} ₸
           </div>
         </div>
@@ -49,15 +49,7 @@ export function showProductCardFull(product) {
       </div>
     </div>
 
-    <!-- BOTTOM -->
-    <div class="shrink-0 bg-white px-4 py-3" data-role="bottom">
-      <div class="flex items-center justify-end">
-        <button
-          class="w-12 h-12 rounded-full bg-green-500 text-white text-2xl flex items-center justify-center"
-          data-action="add"
-        >+</button>
-      </div>
-    </div>
+    <div class="shrink-0 bg-white px-4 py-3 flex justify-center" data-role="bottom"></div>
   `;
 
   overlay.appendChild(sheet);
@@ -66,43 +58,90 @@ export function showProductCardFull(product) {
   const bottom = sheet.querySelector("[data-role='bottom']");
 
   /* ---------- UI ---------- */
-  function renderQuantity(quantity) {
-    bottom.innerHTML = `
-      <div class="flex items-center justify-end gap-4">
-        <button data-action="decrease"
-          class="w-10 h-10 rounded-full bg-gray-200 text-xl flex items-center justify-center">−</button>
-
-        <div class="text-lg font-semibold">${quantity}</div>
-
-        <button data-action="increase"
-          class="w-10 h-10 rounded-full bg-green-500 text-white text-xl flex items-center justify-center">+</button>
-      </div>
-    `;
-  }
-
   function renderAddButton() {
     bottom.innerHTML = `
-      <div class="flex items-center justify-end">
+    <button
+      data-delta="1"
+      class="w-12 h-12 rounded-full bg-green-500 text-white text-2xl
+             flex items-center justify-center transition-all duration-200"
+    >+</button>
+  `;
+  }
+
+  function renderQuantity(quantity) {
+    bottom.innerHTML = `
+    <div class="flex items-center gap-3 transition-all duration-200">
+
+      <!-- левая группа -->
+      <div class="flex items-center gap-2">
+        ${QUICK_DELTAS.map(
+          (d) => `
+            <button
+              data-delta="-${d}"
+              class="px-3 h-9 rounded-full bg-gray-200 text-sm font-medium"
+            >−${d}</button>
+          `,
+        ).join("")}
+
         <button
-          class="w-12 h-12 rounded-full bg-green-500 text-white text-2xl flex items-center justify-center"
-          data-action="add"
-        >+</button>
+          data-delta="-1"
+          class="w-10 h-10 rounded-full bg-gray-200 text-xl
+                 flex items-center justify-center"
+        >−</button>
       </div>
-    `;
+
+      <!-- количество -->
+      <div class="text-lg font-semibold min-w-[3ch] text-center">
+        ${quantity}
+      </div>
+
+      <!-- правая группа -->
+      <div class="flex items-center gap-2">
+        <button
+          data-delta="1"
+          class="w-10 h-10 rounded-full bg-green-500 text-white text-xl
+                 flex items-center justify-center"
+        >+</button>
+
+        ${QUICK_DELTAS.map(
+          (d) => `
+            <button
+              data-delta="${d}"
+              class="px-3 h-9 rounded-full bg-green-500 text-white text-sm font-medium"
+            >+${d}</button>
+          `,
+        ).join("")}
+      </div>
+
+    </div>
+  `;
+  }
+
+  /* ---------- синхронизация при открытии ---------- */
+  try {
+    const cart = await fetchCartRaw();
+    const quantity = cart.items?.[product.id] ?? 0;
+
+    if (quantity > 0) {
+      renderQuantity(quantity);
+    } else {
+      renderAddButton();
+    }
+  } catch {
+    renderAddButton();
   }
 
   /* ---------- делегирование ---------- */
   bottom.addEventListener("click", async (e) => {
     e.stopPropagation();
 
-    const action = e.target.dataset.action;
-    if (!action) return;
+    const btn = e.target.closest("[data-delta]");
+    if (!btn) return;
+
+    const delta = Number(btn.dataset.delta);
+    if (!delta) return;
 
     try {
-      let delta = 0;
-      if (action === "add" || action === "increase") delta = +1;
-      if (action === "decrease") delta = -1;
-
       const res = await updateCart(product.id, delta);
 
       if (res.quantity === 0) {

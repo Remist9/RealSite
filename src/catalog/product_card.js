@@ -1,5 +1,5 @@
 import { showProductCardFull } from "./product_card_full.js";
-import { updateCart, fetchCart } from "../cart/cart_api.js";
+import { updateCart, fetchCartRaw } from "../cart/cart_api.js";
 
 function isCatalogLocked() {
   return window.isCatalogCategoriesOpen === true;
@@ -99,7 +99,7 @@ export function createProductCard(product, { quantity = 0 } = {}) {
     try {
       await updateCart(product.id, delta);
 
-      const cart = await fetchCart();
+      const cart = await fetchCartRaw();
       const quantity = cart.items?.[product.id] ?? 0;
 
       if (quantity === 0) {

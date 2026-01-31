@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
 from app.auth.auth import router as auth_router
 from app.profile.profile import router as profile_router
 from app.catalog.catalog import router as filter_catalog
 from app.cart.cart import router as add_to_cart
+
 
 app = FastAPI()
 
