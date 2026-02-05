@@ -2,48 +2,82 @@
 <html lang="ru">
   <head>
     <script type="module" src="/src/main.js" defer></script>
+
     <meta
-      content="width=device-width, initial-scale=1.0"
       name="viewport"
+      content="width=device-width, initial-scale=1.0"
       charset="UTF-8"
     />
+
     <title>RealSite</title>
     <link rel="stylesheet" href="/style.css" />
   </head>
-  <body class="min-h-screen m-0 bg-blue-500">
-    <div class="h-screen flex flex-col w-full mx-auto lg:max-w-3xl">
+
+  <body class="min-h-screen m-0 bg-linear-to-br from-blue-500 to-blue-700">
+    <!-- центрирующий wrapper -->
+    <div class="min-h-screen flex justify-center">
+
+      <!-- контейнер приложения -->
       <div
-        id="main_box"
-        class="flex-11 bg-red-500 transition-colors duration-300"
+        class="
+          h-screen
+          w-full
+          lg:max-w-6xl
+          bg-blue-500
+          flex
+          flex-col
+          shadow-2xl
+        "
       >
-        <!-- верх -->
-      </div>
+        <!-- ================= ПК: ВЕРХНЯЯ ПАНЕЛЬ ================= -->
+        <header
+          class="hidden lg:flex h-14 bg-blue-400 border-b border-black px-6 items-center"
+        >
+          <button data-page="catalog" class="nav-btn font-medium hover:underline"><div class="font-bold text-lg">Логотип</div></button>
+          
+          <div class="flex-1 flex justify-center">
+            <div class="w-1/2 text-center">ПОИСК</div>
+          </div>
 
-      <div class="flex-1 bg-white flex">
-        <!-- низ -->
-        <div class="flex-1 flex items-center justify-center">
-          <button data-page="sale" class="nav-btn text-5xl sm:text-3xl">
-            🏷️
-          </button>
-        </div>
+<div class="flex gap-6">
+  <button
+    data-page="cart"
+    class="nav-btn font-medium hover:underline"
+  >
+    Корзина
+  </button>
 
-        <div class="flex-1 flex items-center justify-center">
-          <button data-page="catalog" class="nav-btn text-5xl sm:text-3xl">
-            📦
-          </button>
-        </div>
+  <button
+    data-page="profile"
+    class="nav-btn font-medium hover:underline"
+  >
+    Личный кабинет
+  </button>
+</div>
 
-        <div class="flex-1 flex items-center justify-center">
-          <button data-page="cart" class="nav-btn text-5xl sm:text-3xl">
-            🛒
-          </button>
-        </div>
+        </header>
 
-        <div class="flex-1 flex items-center justify-center">
-          <button data-page="profile" class="nav-btn text-5xl sm:text-3xl">
-            👤
-          </button>
-        </div>
+        <!-- ================= ОСНОВНОЙ КОНТЕНТ ================= -->
+        <div
+          id="main_box"
+          class="flex-1 bg-red-500 transition-colors duration-300 overflow-hidden"
+        ></div>
+
+        <!-- ================= МОБИЛКА: НИЖНЯЯ НАВИГАЦИЯ ================= -->
+        <nav class="lg:hidden flex h-16 bg-white border-t border-black">
+          <div class="flex-1 flex items-center justify-center">
+            <button data-page="sale" class="nav-btn text-5xl sm:text-3xl">🏷️</button>
+          </div>
+          <div class="flex-1 flex items-center justify-center">
+            <button data-page="catalog" class="nav-btn text-5xl sm:text-3xl">📦</button>
+          </div>
+          <div class="flex-1 flex items-center justify-center">
+            <button data-page="cart" class="nav-btn text-5xl sm:text-3xl">🛒</button>
+          </div>
+          <div class="flex-1 flex items-center justify-center">
+            <button data-page="profile" class="nav-btn text-5xl sm:text-3xl">👤</button>
+          </div>
+        </nav>
       </div>
     </div>
   </body>

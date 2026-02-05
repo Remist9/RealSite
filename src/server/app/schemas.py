@@ -1,6 +1,6 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator,RootModel
 import re
-from typing import Optional, List
+from typing import Optional, List, Dict
 
 class RegisterRequest(BaseModel):
     login: str = Field(min_length=3, max_length=64)
@@ -43,9 +43,8 @@ class ProfileUpdateRequest(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
 
-class CatalogFilter(BaseModel):
-    alco: Optional[List[str]] = None
-    non_alco: Optional[List[str]] = None
+class CatalogFilter(RootModel[Dict[str, List[str]]]):
+    pass
 
 class UpdateCartRequest(BaseModel):
     product_id: int

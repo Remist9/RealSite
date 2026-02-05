@@ -19,8 +19,25 @@ export function updateCart(productId, delta) {
   });
 }
 
-export function fetchCartRaw() {
-  return apiFetch(`${API_URL}/cart/raw`);
+export async function fetchCartRaw() {
+  try {
+    const res = await fetch(`${API_URL}/cart/raw`, {
+      credentials: "include",
+    });
+
+    if (res.status === 401) {
+      // гость — корзина пустая
+      return { items: {}, summary: {} };
+    }
+
+    if (!res.ok) {
+      throw new Error("cart raw fetch error");
+    }
+
+    return await res.json();
+  } catch {
+    return { items: {}, summary: {} };
+  }
 }
 
 export function fetchCart() {

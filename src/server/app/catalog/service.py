@@ -6,45 +6,37 @@ BASE_DIR = Path(__file__).resolve()
 DATA_PATH = BASE_DIR.parents[3] / "data.json"
 
 
-def extract_items(filters: CatalogFilter) -> dict:
+def extract_items(filters: dict) -> dict:
     with open(DATA_PATH, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    result: dict = {}
+    result = {}
 
-    # ✅ 1. если НИ ОДИН фильтр не применён — вернуть ВСЁ
-    if filters.alco is None and filters.non_alco is None:
+    # если фильтры пустые — вернуть всё
+    if not filters:
         for group, group_data in data.items():
             for category, items in group_data.items():
-                for item_name, item_data in items.items():
-                    result[item_name] = {
+                for name, item in items.items():
+                    result[name] = {
                         "group": group,
                         "category": category,
-                        **item_data
+                        **item
                     }
         return result
 
-    # ✅ 2. иначе применяем фильтры по группам
-    for group, group_data in data.items():
-        categories = getattr(filters, group, None)
-
-        # фильтр не применяли
-        if categories is None:
-            continue
-
-        # фильтр применили, но ничего не выбрали
-        if categories == []:
+    for group, categories in filters.items():
+        if group not in data or not categories:
             continue
 
         for category in categories:
-            if category not in group_data:
+            if category not in data[group]:
                 continue
 
-            for item_name, item_data in group_data[category].items():
-                result[item_name] = {
+            for name, item in data[group][category].items():
+                result[name] = {
                     "group": group,
                     "category": category,
-                    **item_data
+                    **item
                 }
 
     return result

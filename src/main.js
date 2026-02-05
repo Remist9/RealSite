@@ -32,17 +32,43 @@ async function requireAuth(onSuccess) {
   }
 }
 
+function isDesktop() {
+  return window.matchMedia("(min-width: 1024px)").matches;
+}
+
+function getCatalogUIConfig() {
+  const desktop = isDesktop();
+
+  return {
+    search: desktop ? "none" : "local",
+    categories: desktop ? "sidebar" : "dropdown",
+  };
+}
+
 // === РЕНДЕР СТРАНИЦ ===
 function renderPage(page) {
   main_box.innerHTML = "";
 
+  const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+
   switch (page) {
     case "sale":
-      renderSale(main_box);
+      if (isDesktop) {
+        // на ПК sale = режим каталога
+        renderCatalog(main_box, {
+          search: "none",
+          categories: "sidebar",
+        });
+      } else {
+        renderSale(main_box);
+      }
       break;
 
     case "catalog":
-      renderCatalog(main_box);
+      renderCatalog(main_box, {
+        search: isDesktop ? "none" : "local",
+        categories: isDesktop ? "sidebar" : "dropdown",
+      });
       break;
 
     case "cart":
