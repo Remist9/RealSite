@@ -1,8 +1,31 @@
 import { showLogoutConfirm } from "../auth/logout_modal.js";
 import { logoutRequest } from "../auth/auth_actions.js";
 import { showAuthModal } from "../auth/auth_btn.js";
-import { getMyProfile } from "./profile_api.js";
+import { getMyProfile, getUserAddress } from "./profile_api.js";
 import { userInfoEdit } from "./user_info_edit.js";
+import { userAddressEdit } from "./user_address_edit.js";
+
+async function openUserAddressEdit(main_box) {
+  try {
+    const addresses = await getUserAddress();
+
+    const profileContent = main_box.querySelector(".profile_content");
+
+    const isHidden = !profileContent || profileContent.offsetParent === null;
+
+    if (isHidden) {
+      // 📱 мобилка → bottom sheet
+      userAddressEdit(addresses);
+    } else {
+      // 🖥 ПК → embedded
+      userAddressEdit(addresses, {
+        container: profileContent,
+      });
+    }
+  } catch (err) {
+    console.error("Ошибка загрузки адресов:", err);
+  }
+}
 
 /* =======================
    LOAD PROFILE DATA
@@ -40,9 +63,12 @@ async function loadProfile(main_box) {
 
 // 🔒 единый handler кликов профиля
 function createProfileClickHandler(main_box) {
-  return async function onProfileClick(e) {
-    const action = e.target.dataset.action;
-    if (!action) return;
+  return function onProfileClick(e) {
+    const actionEl = e.target.closest("[data-action]");
+    if (!actionEl) return;
+
+    const action = actionEl.dataset.action;
+    e.stopPropagation();
 
     if (action === "logout") {
       showLogoutConfirm(async () => {
@@ -58,9 +84,17 @@ function createProfileClickHandler(main_box) {
         main_box.innerHTML = "";
 
         showAuthModal(() => {
-          renderProfile(main_box); // 🔥 ВОТ ЭТО КЛЮЧ
+          renderProfile(main_box);
         });
       });
+    }
+
+    if (action === "edit-user") {
+      userInfoEdit();
+    }
+
+    if (action === "addresses") {
+      openUserAddressEdit(main_box);
     }
   };
 }
@@ -76,73 +110,104 @@ function onProfileUpdated(main_box) {
 export function renderProfile(main_box) {
   // базовые классы
   main_box.className =
-    "flex-[11] bg-red-500 transition-colors duration-300 overflow-hidden";
+    "flex-[11] bg-white transition-colors duration-300 overflow-hidden";
 
   // HTML
   main_box.innerHTML = `
-    <div class="inner_box flex flex-col overflow-auto h-full">
+<div class="inner_box flex flex-col h-full overflow-hidden">
 
-      <div class="user_info w-full bg-blue-200">
-        <div class="flex items-center px-4 gap-8 py-4">
-          <div class="user_name flex flex-col justify-center">
-            <span id="profile-login" class="text-sm text-gray-600">
-              Загрузка...
-            </span>
-            <span id="profile-fullname" class="text-lg font-semibold">
-              Имя Фамилия
-            </span>
-          </div>
-        </div>
-      </div>
+  <!-- ========== TOP ========== -->
+  <div class="profile_top flex flex-col lg:flex-row">
 
-      <div class="order_summary w-full bg-blue-300 px-4 py-3">
-        <div class="grid grid-cols-3 gap-4 text-center">
-          <div class="stat-card bg-white/70 rounded-lg p-3">
-            <div class="text-sm text-gray-600">Сумма</div>
-            <div class="text-lg font-semibold">???</div>
-          </div>
-          <div class="stat-card bg-white/70 rounded-lg p-3">
-            <div class="text-sm text-gray-600">Заказы</div>
-            <div class="text-lg font-semibold">???</div>
-          </div>
-          <div class="stat-card bg-white/70 rounded-lg p-3">
-            <div class="text-sm text-gray-600">Вес</div>
-            <div class="text-lg font-semibold">???</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="option_menu w-full bg-blue-400 px-4 py-3">
-        <div class="flex flex-col gap-2 text-sm">
-          <div class="option-item cursor-pointer hover:underline">Активные заказы</div>
-          <div class="option-item cursor-pointer hover:underline">История заказов</div>
-          <div class="option-item cursor-pointer hover:underline">Лист ожидания</div>
-          <div class="option-item cursor-pointer hover:underline">Контакты для связи</div>
-          <div class="option-item cursor-pointer hover:underline">Мои адреса</div>
-        </div>
-      </div>
-
-      <div class="logout_menu w-full bg-blue-600 px-4 py-3">
-        <div class="flex flex-col gap-2 text-sm">
-          <div class="logout_item cursor-pointer hover:underline" data-action="switch-user">
-            Сменить пользователя
-          </div>
-          <div class="logout_item cursor-pointer hover:underline" data-action="logout">
-            Выход
-          </div>
+    <!-- user_info -->
+    <div class="user_info w-full lg:w-80" data-action="edit-user">
+      <div class="flex items-center px-4 gap-8 py-4">
+        <div class="user_name flex flex-col justify-center">
+          <span id="profile-login" class="text-sm text-gray-600">
+            Загрузка...
+          </span>
+          <span id="profile-fullname" class="text-lg font-semibold">
+            Имя Фамилия
+          </span>
         </div>
       </div>
     </div>
-  `;
 
-  /* =======================
-     USER INFO CLICK
-  ======================= */
-  const userInfo = main_box.querySelector(".user_info");
-  userInfo.onclick = (e) => {
-    e.stopPropagation();
-    userInfoEdit();
-  };
+    <!-- order_summary -->
+    <div class="order_summary w-full lg:flex-1 px-4 py-3 bg-gray-400">
+      <div class="grid grid-cols-3 gap-4 text-center">
+        <div class="stat-card bg-white rounded-lg p-3">
+          <div class="text-sm text-gray-600">Сумма</div>
+          <div class="text-lg font-semibold">???</div>
+        </div>
+        <div class="stat-card bg-white rounded-lg p-3">
+          <div class="text-sm text-gray-600">Заказы</div>
+          <div class="text-lg font-semibold">???</div>
+        </div>
+        <div class="stat-card bg-white rounded-lg p-3">
+          <div class="text-sm text-gray-600">Вес</div>
+          <div class="text-lg font-semibold">???</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========== MIDDLE ========== -->
+  <div class="profile_middle flex flex-col lg:flex-row flex-1">
+
+    <!-- option_menu -->
+    <div class="option_menu w-full lg:w-80 px-4 py-3 text-sm bg-white">
+      <div class="flex flex-col gap-2">
+        <div class="option-item cursor-pointer hover:underline">
+          Активные заказы
+        </div>
+        <div class="option-item cursor-pointer hover:underline">
+          История заказов
+        </div>
+        <div class="option-item cursor-pointer hover:underline">
+          Лист ожидания
+        </div>
+        <div class="option-item cursor-pointer hover:underline">
+          Контакты для связи
+        </div>
+        <div
+          class="option-item cursor-pointer hover:underline"
+          data-action="addresses"
+        >
+          Мои адреса
+        </div>
+      </div>
+    </div>
+
+    <!-- right content (пока пусто) -->
+    <div class="profile_content hidden lg:block flex-1 px-4 py-4">
+      <!-- сюда потом -->
+    </div>
+
+  </div>
+
+  <!-- ========== BOTTOM ========== -->
+  <div class="logout_menu px-4 py-3 text-lg">
+    <div class="flex flex-col gap-2">
+      <div
+        class="logout_item cursor-pointer hover:underline"
+        data-action="switch-user"
+      >
+        Сменить пользователя
+      </div>
+      <div
+        class="logout_item cursor-pointer hover:underline"
+        data-action="logout"
+      >
+        Выход
+      </div>
+    </div>
+  </div>
+
+</div>
+
+`;
 
   /* =======================
      ONE-TIME LISTENERS

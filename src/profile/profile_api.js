@@ -12,3 +12,36 @@ export function updateMyProfile(data) {
     body: JSON.stringify(data),
   });
 }
+
+export async function addUserAddress(address) {
+  return apiFetch(`${API_URL}/profile/address`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ address }),
+  });
+}
+
+export async function getUserAddress() {
+  return await apiFetch(`${API_URL}/profile/address`, {
+    method: "GET",
+    credentials: "include",
+  });
+}
+
+export async function deleteUserAddress(addressId) {
+  return await apiFetch(`${API_URL}/profile/address/${addressId}`, {
+    method: "DELETE",
+  });
+}
+
+export async function updateUserAddress(addressId, address) {
+  return await apiFetch(`${API_URL}/profile/address/${addressId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ address }),
+  });
+}

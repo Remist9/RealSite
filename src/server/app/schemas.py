@@ -53,3 +53,10 @@ class UpdateCartRequest(BaseModel):
 class CartResponse(BaseModel):
     product_id: int
     quantity: int
+
+class AddressCreate(BaseModel):
+    address: str  
+
+class AddressOut(BaseModel):
+    id: int
+    address: str  

@@ -16,5 +16,9 @@ export async function apiFetch(url, options = {}) {
     throw new Error(err.detail || "Ошибка запроса");
   }
 
+  if (res.status === 204) {
+    return null;
+  }
+
   return res.json();
 }

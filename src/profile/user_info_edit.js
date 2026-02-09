@@ -2,8 +2,7 @@ import { updateMyProfile } from "./profile_api.js";
 
 export function userInfoEdit() {
   const overlay = document.createElement("div");
-  overlay.className =
-    "fixed inset-0 bg-black/40 z-50 flex items-end";
+  overlay.className = "fixed inset-0 bg-black/40 z-50 flex items-end";
 
   const sheet = document.createElement("div");
   sheet.className = `
@@ -92,7 +91,6 @@ export function userInfoEdit() {
 
       document.dispatchEvent(new CustomEvent("profile-updated"));
       close(); // ✅ успех — закрываем окно
-
     } catch (err) {
       errorBox.textContent = err.message;
       errorBox.classList.remove("hidden");

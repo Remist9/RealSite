@@ -89,6 +89,11 @@ ${
         }
 
         <div class="catalog-content flex-1 min-h-0 overflow-auto relative">
+${
+  !ui.isSidebarCategories
+    ? `<div class="catalog-overlay fixed inset-0 hidden z-20"></div>`
+    : ""
+}
 
           ${
             !ui.isSidebarCategories
@@ -134,6 +139,8 @@ export function renderCatalog(main_box, config = {}) {
   const resetBtn = main_box.querySelector(".reset-categories");
   const menuBtn = main_box.querySelector(".catalog-menu");
   const categoriesBox = main_box.querySelector(".catalog-categories");
+  const overlay = main_box.querySelector(".catalog-overlay");
+
   const catalogContent = main_box.querySelector(".catalog-content");
 
   /* ---------- STATE ---------- */
@@ -176,7 +183,24 @@ export function renderCatalog(main_box, config = {}) {
     e.stopPropagation();
 
     const isHidden = categoriesBox.classList.toggle("hidden");
+    overlay.classList.toggle("hidden", isHidden);
+
     window.isCatalogDropdownOpen = !isHidden;
+  });
+
+  overlay?.addEventListener("click", () => {
+    categoriesBox.classList.add("hidden");
+    overlay.classList.add("hidden");
+    window.isCatalogDropdownOpen = false;
+
+    if (isFilterDirty) {
+      updateCatalog();
+      isFilterDirty = false;
+    }
+  });
+
+  categoriesBox?.addEventListener("click", (e) => {
+    e.stopPropagation();
   });
 
   categoryItems.forEach((el) =>
@@ -216,31 +240,6 @@ export function renderCatalog(main_box, config = {}) {
     syncUI();
     updateCatalog();
   });
-
-  document.addEventListener(
-    "click",
-    (e) => {
-      if (!window.isCatalogDropdownOpen) return;
-
-      // клик по dropdown — разрешаем
-      if (categoriesBox?.contains(e.target)) return;
-      if (menuBtn?.contains(e.target)) return;
-
-      // ❌ ЛЮБОЙ ДРУГОЙ КЛИК ГАСИМ
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-
-      categoriesBox.classList.add("hidden");
-      window.isCatalogDropdownOpen = false;
-
-      if (isFilterDirty) {
-        updateCatalog();
-        isFilterDirty = false;
-      }
-    },
-    true, // 🔥 CAPTURE PHASE
-  );
 
   /* ---------- DATA ---------- */
 

@@ -4,7 +4,7 @@ export function createCartCard(item, { onChange } = {}) {
 
   card.className = `
     relative w-full h-[120px]
-    bg-yellow-300 rounded-lg
+    bg-gray-200 rounded-lg
     flex items-center p-3 gap-3
   `;
 
@@ -35,8 +35,12 @@ export function createCartCard(item, { onChange } = {}) {
     ${image}
 
     <div class="flex-1 h-full flex flex-col">
-      <div class="grow-35 flex items-center px-2 pr-8">
-        <div class="text-sm font-semibold truncate">
+      <div class="grow-35 flex items-center px-2 pr-8 min-w-0">
+        <div class="text-sm font-semibold
+            overflow-hidden
+            text-ellipsis
+            leading-tight
+            line-clamp-2">
           ${item.title}
         </div>
       </div>
@@ -47,7 +51,7 @@ export function createCartCard(item, { onChange } = {}) {
           <span class="text-gray-600 font-normal">${item.total_weight} кг</span>
         </div>
 
-        <div class="flex-[1.4] flex items-center justify-end gap-2">
+        <div class="flex-none flex items-center justify-end gap-2">
           <button class="cart-minus w-7 h-7 rounded-full bg-white border">−</button>
           <div class="min-w-24px text-center font-semibold">
             ${item.quantity}
