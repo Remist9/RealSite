@@ -60,3 +60,7 @@ class AddressCreate(BaseModel):
 class AddressOut(BaseModel):
     id: int
     address: str  
+
+class CreateOrderBody(BaseModel):
+    address_id: int
+    

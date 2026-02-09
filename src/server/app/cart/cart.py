@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Request, HTTPException, status
+from fastapi import APIRouter, Request, HTTPException, status, Body
 from pydantic import BaseModel
 from app.db import get_db
 from app.auth.session import get_current_user_id
-from app.schemas import CartResponse, UpdateCartRequest
+from app.schemas import CartResponse, UpdateCartRequest,CreateOrderBody
 from app.catalog.catalog_index import CATALOG_BY_ID
 import json
 
@@ -164,7 +164,10 @@ def get_cart(request: Request):
     }
 
 @router.post("/order")
-def create_order(request: Request):
+def create_order(
+    request: Request,
+    body: CreateOrderBody = Body(...)
+):
     user_id = get_current_user_id(request)
 
     if not user_id:
@@ -174,6 +177,23 @@ def create_order(request: Request):
     cur = conn.cursor()
 
     try:
+        # 1. Проверяем адрес
+        cur.execute("""
+            SELECT address
+            FROM user_addresses
+            WHERE id = %s AND user_id = %s
+        """, (body.address_id, user_id))
+
+        address_row = cur.fetchone()
+        if not address_row:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid address"
+            )
+
+        address_text = address_row[0]
+
+        # 2. Получаем корзину
         cur.execute("""
             SELECT product_id, quantity
             FROM active_cart
@@ -201,19 +221,29 @@ def create_order(request: Request):
             total_weight += product["weight"] * quantity
             items.append([product_id, quantity])
 
+        # 3. Создаём заказ С адресом
         cur.execute("""
-            INSERT INTO active_orders (user_id, t_items, t_cost, t_weight)
-            VALUES (%s, %s::jsonb, %s, %s)
+            INSERT INTO active_orders (
+                user_id,
+                address,
+                t_items,
+                t_cost,
+                t_weight
+            )
+            VALUES (%s, %s, %s::jsonb, %s, %s)
             RETURNING id
         """, (
-            user_id,
-            json.dumps(items),
-            total_cost,
-            total_weight
+            user_id,          # 1
+            address_text,     # 2
+            json.dumps(items),# 3
+            total_cost,       # 4
+            total_weight      # 5
         ))
+
 
         order_id = cur.fetchone()[0]
 
+        # 4. Очищаем корзину
         cur.execute("""
             DELETE FROM active_cart
             WHERE user_id = %s

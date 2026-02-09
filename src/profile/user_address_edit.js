@@ -1,6 +1,7 @@
 import { userAddressAdd } from "./user_address_add.js";
 import {
   deleteUserAddress,
+  getUserAddress,
   updateUserAddress,
   addUserAddress,
 } from "./profile_api.js";
@@ -16,7 +17,7 @@ export function userAddressEdit(addresses = [], { container } = {}) {
   const sheet = document.createElement("div");
   sheet.className = `
   w-full bg-white
-  ${isEmbedded ? "rounded-xl border" : "rounded-t-2xl"}
+  ${isEmbedded ? "rounded-xl" : "rounded-t-2xl"}
   min-h-[70vh] max-h-[90vh]
   flex flex-col
   transition-transform duration-300
@@ -41,6 +42,12 @@ export function userAddressEdit(addresses = [], { container } = {}) {
   </div>
 `;
 
+  async function refreshAddresses() {
+    const fresh = await getUserAddress();
+    addresses = fresh;
+    list.innerHTML = renderAddresses(addresses);
+  }
+
   const list = sheet.querySelector("#address-list");
   root.appendChild(sheet);
 
@@ -58,55 +65,42 @@ export function userAddressEdit(addresses = [], { container } = {}) {
 
     const card = actionEl.closest("[data-address-id]");
     const addressId = card?.dataset.addressId;
+    const action = actionEl.dataset.action;
 
     /* ---------- ADD ---------- */
-    if (actionEl.dataset.action === "add-address") {
-      userAddressAdd({
-        onSubmit: async (value) => {
-          try {
-            const newAddress = await addUserAddress(value);
-            addresses.unshift(newAddress);
-            list.innerHTML = renderAddresses(addresses);
-          } catch (e) {
-            console.error("Ошибка добавления адреса", e);
-          }
-        },
-      });
+    if (action === "add-address") {
+      const changed = await userAddressAdd();
+      if (changed) {
+        await refreshAddresses();
+      }
       return;
     }
 
-    if (actionEl.dataset.action === "edit-address") {
+    /* ---------- EDIT ---------- */
+    if (action === "edit-address") {
       if (!addressId) return;
 
       const addressObj = addresses.find((a) => a.id == addressId);
       if (!addressObj) return;
 
-      userAddressAdd({
+      const changed = await userAddressAdd({
         initialValue: addressObj.address,
-        onSubmit: async (value) => {
-          try {
-            await updateUserAddress(addressId, value);
-
-            // обновляем локально
-            addressObj.address = value;
-            list.innerHTML = renderAddresses(addresses);
-          } catch (e) {
-            console.error("Ошибка обновления адреса", e);
-          }
-        },
       });
 
+      if (changed) {
+        await refreshAddresses();
+      }
       return;
     }
 
     /* ---------- DELETE ---------- */
-    if (actionEl.dataset.action === "delete-address") {
+    if (action === "delete-address") {
       if (!addressId) return;
       if (!confirm("Удалить этот адрес?")) return;
 
       try {
         await deleteUserAddress(addressId);
-        card.remove(); // 🔥 оптимистично
+        await refreshAddresses();
       } catch (err) {
         console.error("Ошибка удаления адреса", err);
       }

@@ -1,23 +1,38 @@
 import { updateMyProfile } from "./profile_api.js";
 
-export function userInfoEdit() {
+export function userInfoEdit({ mode = "mobile" } = {}) {
   const overlay = document.createElement("div");
-  overlay.className = "fixed inset-0 bg-black/40 z-50 flex items-end";
+  overlay.className =
+    mode === "desktop"
+      ? "fixed inset-0 bg-black/40 z-50 flex items-center justify-center"
+      : "fixed inset-0 bg-black/40 z-50 flex items-end";
 
   const sheet = document.createElement("div");
-  sheet.className = `
-    w-full bg-white rounded-t-2xl
-    min-h-[50vh] max-h-[80vh]
-    mx-auto
-    lg:max-w-3xl
-    p-4
-    transition-transform duration-300
-    translate-y-0
-    touch-pan-y
-  `;
+
+  sheet.className =
+    mode === "desktop"
+      ? `
+      bg-white rounded-2xl
+      w-full max-w-xl
+      max-h-[90vh]
+      p-4
+      transition-all duration-300
+    `
+      : `
+      w-full bg-white rounded-t-2xl
+      min-h-[50vh] max-h-[80vh]
+      p-4
+      transition-transform duration-300
+      translate-y-0
+      touch-pan-y
+    `;
 
   sheet.innerHTML = `
-    <div class="w-10 h-1 bg-gray-300 rounded mx-auto mb-3 "></div>
+${
+  mode === "mobile"
+    ? `<div class="w-10 h-1 bg-gray-300 rounded mx-auto mb-3"></div>`
+    : ""
+}
 
     <h2 class="text-lg font-semibold text-center mb-6">
       Редактирование профиля
@@ -102,38 +117,44 @@ export function userInfoEdit() {
     if (e.target === overlay) close();
   });
 
-  let startY = 0;
-  let currentY = 0;
-  let dragging = false;
+  if (mode === "mobile") {
+    let startY = 0;
+    let currentY = 0;
+    let dragging = false;
 
-  sheet.addEventListener("touchstart", (e) => {
-    startY = e.touches[0].clientY;
-    dragging = true;
-    sheet.style.transition = "none";
-  });
+    sheet.addEventListener("touchstart", (e) => {
+      startY = e.touches[0].clientY;
+      dragging = true;
+      sheet.style.transition = "none";
+    });
 
-  sheet.addEventListener("touchmove", (e) => {
-    if (!dragging) return;
-    currentY = e.touches[0].clientY - startY;
-    if (currentY > 0) {
-      sheet.style.transform = `translateY(${currentY}px)`;
-    }
-  });
+    sheet.addEventListener("touchmove", (e) => {
+      if (!dragging) return;
+      currentY = e.touches[0].clientY - startY;
+      if (currentY > 0) {
+        sheet.style.transform = `translateY(${currentY}px)`;
+      }
+    });
 
-  sheet.addEventListener("touchend", () => {
-    dragging = false;
-    sheet.style.transition = "transform 0.3s";
+    sheet.addEventListener("touchend", () => {
+      dragging = false;
+      sheet.style.transition = "transform 0.3s";
 
-    if (currentY > 80) {
-      close();
-    } else {
-      sheet.style.transform = "translateY(0)";
-    }
-    currentY = 0;
-  });
-
+      if (currentY > 80) {
+        close();
+      } else {
+        sheet.style.transform = "translateY(0)";
+      }
+      currentY = 0;
+    });
+  }
   function close() {
-    sheet.style.transform = "translateY(100%)";
+    if (mode === "desktop") {
+      sheet.classList.add("scale-95", "opacity-0");
+    } else {
+      sheet.style.transform = "translateY(100%)";
+    }
+
     setTimeout(() => overlay.remove(), 300);
   }
 }

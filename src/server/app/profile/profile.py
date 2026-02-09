@@ -140,6 +140,7 @@ def get_my_address(
         )
 
         rows = cur.fetchall()
+        print(rows)
 
         # 3️⃣ возвращаем список (или пустой список)
         return [

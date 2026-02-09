@@ -44,8 +44,11 @@ export function fetchCart() {
   return apiFetch(`${API_URL}/cart/cart`);
 }
 
-export function fetchOrder() {
+export function fetchOrder(addressId) {
   return apiFetch(`${API_URL}/cart/order`, {
     method: "POST",
+    body: JSON.stringify({
+      address_id: addressId,
+    }),
   });
 }

@@ -90,7 +90,16 @@ function createProfileClickHandler(main_box) {
     }
 
     if (action === "edit-user") {
-      userInfoEdit();
+      const profileContent = main_box.querySelector(".profile_content");
+      const isHidden = !profileContent || profileContent.offsetParent === null;
+
+      if (isHidden) {
+        // 📱 мобилка → bottom sheet
+        userInfoEdit({ mode: "mobile" });
+      } else {
+        // 🖥 ПК → modal
+        userInfoEdit({ mode: "desktop" });
+      }
     }
 
     if (action === "addresses") {

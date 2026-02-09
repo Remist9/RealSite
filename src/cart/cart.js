@@ -1,5 +1,6 @@
-import { fetchCart, updateCart, fetchOrder } from "./cart_api.js";
+import { fetchCart, updateCart } from "./cart_api.js";
 import { createCartCard } from "./cart_card.js";
+import { openCartSubmit } from "./cart_submit.js";
 
 export async function renderCart(main_box) {
   main_box.className = `
@@ -11,7 +12,7 @@ export async function renderCart(main_box) {
 `;
 
   main_box.innerHTML = `
-  <div class="flex flex-col lg:flex-row h-full w-full">
+  <div class="relative flex flex-col lg:flex-row h-full w-full">
 
     <!-- Левая часть: товары -->
     <div class="w-full lg:w-1/2 flex flex-col overflow-hidden">
@@ -31,10 +32,16 @@ export async function renderCart(main_box) {
         "
       ></div>
 
-      <div
-        id="cart-empty"
-        class="hidden flex-1 flex items-center justify-center text-gray-400 text-lg"
-      >
+<div
+  id="cart-empty"
+  class="
+    hidden
+    absolute inset-0
+    flex items-center justify-center
+    text-gray-400 text-lg
+    z-10
+  "
+>
         Корзина пуста
       </div>
 
@@ -179,20 +186,27 @@ export async function renderCart(main_box) {
     console.warn(e.message);
   }
 
-  orderBtn.onclick = async () => {
-    try {
-      orderBtn.disabled = true;
-      await fetchOrder();
+  function getSummaryFromDOM() {
+    return {
+      totalPrice: priceEl.textContent,
+      totalWeight: weightEl.textContent,
+    };
+  }
 
-      content.innerHTML = "";
-      updateSummary({});
-      updateVisibility(0);
+  orderBtn.onclick = () => {
+    const isMobile = window.innerWidth < 1024;
+    const summary = getSummaryFromDOM();
 
-      console.log("order created");
-    } catch (e) {
-      console.warn("order error:", e);
-    } finally {
-      orderBtn.disabled = false;
-    }
+    openCartSubmit({
+      mode: isMobile ? "sheet" : "modal",
+      summary,
+      onSuccess: async () => {
+        const cart = await fetchCart();
+
+        content.innerHTML = "";
+        updateSummary(cart.summary);
+        updateVisibility(0);
+      },
+    });
   };
 }
