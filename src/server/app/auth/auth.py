@@ -6,7 +6,7 @@ import secrets
 from app.db import get_db
 from app.schemas import RegisterRequest, LoginRequest
 
-from app.auth.session import is_authenticated
+from app.auth.session import is_authenticated,get_current_user
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -94,7 +94,7 @@ def login(data: LoginRequest, response: Response):
         # 1. Ищем пользователя
         cur.execute(
             """
-            SELECT id, password_hash
+            SELECT id, password_hash,role
             FROM realsite_user
             WHERE login = %s
             """,
@@ -109,7 +109,7 @@ def login(data: LoginRequest, response: Response):
                 detail="Неверный логин или пароль"
             )
 
-        user_id, password_hash = user
+        user_id, password_hash,role = user
 
         # 2. Проверяем пароль
         if not pwd_context.verify(data.password, password_hash):
@@ -149,7 +149,10 @@ def login(data: LoginRequest, response: Response):
                 samesite="lax",
             )
 
-        return {"status": "ok"}
+        return {
+                    "status": "ok",
+                    "role": role
+                }
 
     except HTTPException:
         raise
@@ -169,9 +172,38 @@ def login(data: LoginRequest, response: Response):
 
 @router.get("/check")
 def auth_check(request: Request):
-    return {
-        "authenticated": is_authenticated(request)
-    }
+    token = request.cookies.get("access_token")
+
+    if not token:
+        return {"authenticated": False}
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("""
+            SELECT u.role
+            FROM user_sessions s
+            JOIN realsite_user u ON u.id = s.user_id
+            WHERE s.access_token = %s
+        """, (token,))
+
+        row = cur.fetchone()
+
+        if not row:
+            return {"authenticated": False}
+
+        role = row[0]
+
+        return {
+            "authenticated": True,
+            "role": role
+        }
+
+    finally:
+        cur.close()
+        conn.close()
+
 
 
 @router.post("/logout")

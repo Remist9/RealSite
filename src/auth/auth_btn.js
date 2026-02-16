@@ -1,5 +1,5 @@
-import {API_URL} from "../config.js"
- 
+import { API_URL } from "../config.js";
+
 function validateLogin(login) {
   if (login.length < 3) {
     return "Логин должен быть не короче 3 символов";
@@ -32,30 +32,28 @@ function validatePassword(password) {
   return null;
 }
 
-
 export function showAuthModal(onSuccess) {
   const overlay = document.createElement("div");
   let mode = "choose"; // choose | login | register
 
   async function registerUser(login, password) {
-  const res = await fetch(`${API_URL}/auth/register`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({ login, password }),
-  });
+    const res = await fetch(`${API_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ login, password }),
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (!res.ok) {
-    throw new Error(data.detail || "Ошибка регистрации");
+    if (!res.ok) {
+      throw new Error(data.detail || "Ошибка регистрации");
+    }
+
+    return data;
   }
-
-  return data;
-}
-
 
   overlay.className =
     "fixed inset-0 bg-black/50 flex items-center justify-center z-50";
@@ -106,12 +104,16 @@ export function showAuthModal(onSuccess) {
                 />
 
               
-              ${mode === "login" ? `
+              ${
+                mode === "login"
+                  ? `
                 <label class="text-white text-xs flex items-center gap-1">
                   <input type="checkbox" class="auth-remember" />
                   Запомнить меня
                 </label>
-              ` : ""}
+              `
+                  : ""
+              }
 
               <div class="auth-error text-red-200 text-xs hidden"></div>
 
@@ -174,7 +176,6 @@ export function showAuthModal(onSuccess) {
         return;
       }
 
-
       if (mode === "register") {
         registerUser(login, password)
           .then(() => {
@@ -225,11 +226,8 @@ export function showAuthModal(onSuccess) {
           });
       }
 
-
-
       e.stopPropagation();
     }
-
 
     e.stopPropagation();
   });

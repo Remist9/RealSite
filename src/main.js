@@ -5,6 +5,7 @@ import { API_URL } from "./config.js";
 import { renderSale } from "./sale/sale.js";
 import { renderCatalog } from "./catalog/catalog.js";
 import { renderCart } from "./cart/cart.js";
+import { renderAdmin } from "./admin/admin.js";
 
 const main_box = document.getElementById("main_box");
 
@@ -19,13 +20,21 @@ async function requireAuth(onSuccess) {
 
   try {
     const data = await apiFetch(`${API_URL}/auth/check`);
-    if (data.authenticated) {
-      onSuccess();
-    } else {
-      showAuthModal(onSuccess);
+
+    if (!data.authenticated) {
+      showAuthModal(() => requireAuth(onSuccess));
+      return;
     }
+
+    // 🔴 Если админ — показываем админку
+    if (data.role === "admin") {
+      renderAdmin(main_box);
+      return;
+    }
+
+    // 🟢 Обычный пользователь
+    onSuccess();
   } catch (err) {
-    // сюда попадём только если что-то кроме 401
     console.error(err);
   } finally {
     authInProgress = false;
