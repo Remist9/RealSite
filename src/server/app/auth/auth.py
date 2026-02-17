@@ -1,12 +1,11 @@
 from fastapi import APIRouter, HTTPException, status, Response, Request
 from passlib.context import CryptContext
 import psycopg2
-import secrets
 
 from app.db import get_db
 from app.schemas import RegisterRequest, LoginRequest
-
-from app.auth.session import is_authenticated,get_current_user
+from app.auth.session import get_current_user
+from app.auth.jwt_utils import create_access_token
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -42,14 +41,23 @@ def register(data: RegisterRequest, response: Response):
         )
 
         # 3️⃣ создаём сессию
-        access_token = secrets.token_urlsafe(32)
+        role = "user"
+        access_token, expires_at = create_access_token(
+            {
+                "user_id": user_id,
+                "role": role
+            },
+            60 * 24
+        )
+
         cur.execute(
             """
-            INSERT INTO user_sessions (user_id, access_token)
-            VALUES (%s, %s)
+            INSERT INTO user_sessions (user_id, access_token, expires_at)
+            VALUES (%s, %s, %s)
             """,
-            (user_id, access_token)
+            (user_id, access_token, expires_at)
         )
+
 
         conn.commit()
 
@@ -81,9 +89,6 @@ def register(data: RegisterRequest, response: Response):
     finally:
         cur.close()
         conn.close()
-
-
-
 
 @router.post("/login")
 def login(data: LoginRequest, response: Response):
@@ -117,37 +122,42 @@ def login(data: LoginRequest, response: Response):
                 status_code=401,
                 detail="Неверный логин или пароль"
             )
+        
+        if data.remember_me:
+            expire_minutes = 60 * 24 * 30
+        else:
+            expire_minutes = 60 * 24  # 1 день
 
         # 3. Генерируем access_token
-        access_token = secrets.token_urlsafe(32)
+        access_token, expires_at = create_access_token(
+            {
+                "user_id": user_id,
+                "role": role
+            },
+            expire_minutes
+        )
+
 
         # 4. Создаём сессию
         cur.execute(
             """
-            INSERT INTO user_sessions (user_id, access_token)
-            VALUES (%s, %s)
+            INSERT INTO user_sessions (user_id, access_token, expires_at)
+            VALUES (%s, %s, %s)
             """,
-            (user_id, access_token)
+            (user_id, access_token, expires_at)
         )
+
 
         conn.commit()
 
-        # 5. Если "запомнить меня" — кладём cookie
-        if data.remember_me:
-            response.set_cookie(
-                key="access_token",
-                value=access_token,
-                httponly=True,
-                samesite="lax",
-                max_age=60 * 60 * 24 * 30  # 30 дней
-            )
-        else:
-            response.set_cookie(
-                key="access_token",
-                value=access_token,
-                httponly=True,
-                samesite="lax",
-            )
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            samesite="lax",
+            max_age=expire_minutes * 60
+        )
+
 
         return {
                     "status": "ok",
@@ -172,37 +182,15 @@ def login(data: LoginRequest, response: Response):
 
 @router.get("/check")
 def auth_check(request: Request):
-    token = request.cookies.get("access_token")
-
-    if not token:
-        return {"authenticated": False}
-
-    conn = get_db()
-    cur = conn.cursor()
-
     try:
-        cur.execute("""
-            SELECT u.role
-            FROM user_sessions s
-            JOIN realsite_user u ON u.id = s.user_id
-            WHERE s.access_token = %s
-        """, (token,))
-
-        row = cur.fetchone()
-
-        if not row:
-            return {"authenticated": False}
-
-        role = row[0]
-
+        user = get_current_user(request)
         return {
             "authenticated": True,
-            "role": role
+            "role": user["role"]
         }
+    except HTTPException:
+        return {"authenticated": False}
 
-    finally:
-        cur.close()
-        conn.close()
 
 
 

@@ -11,7 +11,7 @@ export function renderAdmin(main_box) {
   `;
 
   main_box.innerHTML = `
-    <div class="h-[60px] bg-red-600 text-white flex items-center justify-between px-6">
+    <div class="h-15 bg-red-600 text-white flex items-center justify-between px-6">
       <div class="text-xl font-bold">
       </div>
 

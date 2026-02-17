@@ -1,10 +1,18 @@
 from fastapi import Request, HTTPException, status
 from app.db import get_db
+from jose import JWTError
+from app.auth.jwt_utils import decode_token
 
-def is_authenticated(request: Request) -> bool:
+def get_current_user_id(request: Request) -> int:
     token = request.cookies.get("access_token")
+
     if not token:
-        return False
+        raise HTTPException(status_code=401)
+
+    payload = decode_token(token)
+
+    if not payload:
+        raise HTTPException(status_code=401)
 
     conn = get_db()
     cur = conn.cursor()
@@ -15,52 +23,20 @@ def is_authenticated(request: Request) -> bool:
             SELECT 1
             FROM user_sessions
             WHERE access_token = %s
+              AND expires_at > NOW()
             """,
             (token,)
         )
 
-        return cur.fetchone() is not None
+        if not cur.fetchone():
+            raise HTTPException(status_code=401)
+
+        return payload["user_id"]
 
     finally:
         cur.close()
         conn.close()
 
-
-def get_current_user_id(request: Request) -> int:
-    token = request.cookies.get("access_token")
-
-    if not token:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Не авторизован"
-        )
-
-    conn = get_db() 
-    cur = conn.cursor()
-
-    try:
-        cur.execute(
-            """
-            SELECT user_id
-            FROM user_sessions
-            WHERE access_token = %s
-            """,
-            (token,)
-        )
-
-        row = cur.fetchone()
-
-        if not row:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Сессия недействительна"
-            )
-
-        return row[0]
-
-    finally:
-        cur.close()
-        conn.close()
 
 
 def get_current_user(request: Request) -> dict:
@@ -72,29 +48,38 @@ def get_current_user(request: Request) -> dict:
             detail="Не авторизован"
         )
 
+    payload = decode_token(token)
+
+    if not payload:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Неверный токен"
+        )
+
+    user_id = payload.get("user_id")
+    role = payload.get("role")
+
+    # 🔥 дополнительная проверка в БД
     conn = get_db()
     cur = conn.cursor()
 
     try:
         cur.execute(
             """
-            SELECT u.id, u.role
-            FROM user_sessions s
-            JOIN realsite_user u ON u.id = s.user_id
-            WHERE s.access_token = %s
+            SELECT 1
+            FROM user_sessions
+            WHERE access_token = %s
+            AND expires_at > NOW()
             """,
             (token,)
         )
 
-        row = cur.fetchone()
 
-        if not row:
+        if not cur.fetchone():
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Сессия недействительна"
+                detail="Сессия отозвана"
             )
-
-        user_id, role = row
 
         return {
             "id": user_id,
@@ -104,4 +89,3 @@ def get_current_user(request: Request) -> dict:
     finally:
         cur.close()
         conn.close()
-
