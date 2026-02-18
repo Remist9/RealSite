@@ -4,6 +4,8 @@ import { showAuthModal } from "../auth/auth_btn.js";
 import { getMyProfile, getUserAddress } from "./profile_api.js";
 import { userInfoEdit } from "./user_info_edit.js";
 import { userAddressEdit } from "./user_address_edit.js";
+import { userActiveOrdersFrame } from "./user_active_orders_frame.js";
+import { userCompletedOrdersFrame } from "./user_completed_orders_frame";
 
 async function openUserAddressEdit(main_box) {
   try {
@@ -24,6 +26,36 @@ async function openUserAddressEdit(main_box) {
     }
   } catch (err) {
     console.error("Ошибка загрузки адресов:", err);
+  }
+}
+
+function openUserActiveOrders(main_box) {
+  const profileContent = main_box.querySelector(".profile_content");
+  const isHidden = !profileContent || profileContent.offsetParent === null;
+
+  if (isHidden) {
+    // 📱 мобилка → bottom sheet
+    userActiveOrdersFrame();
+  } else {
+    // 🖥 ПК → embedded
+    userActiveOrdersFrame({
+      container: profileContent,
+    });
+  }
+}
+
+function openUserCompletedOrders(main_box) {
+  const profileContent = main_box.querySelector(".profile_content");
+  const isHidden = !profileContent || profileContent.offsetParent === null;
+
+  if (isHidden) {
+    // 📱 мобилка → bottom sheet
+    userCompletedOrdersFrame();
+  } else {
+    // 🖥 ПК → embedded
+    userCompletedOrdersFrame({
+      container: profileContent,
+    });
   }
 }
 
@@ -105,6 +137,14 @@ function createProfileClickHandler(main_box) {
     if (action === "addresses") {
       openUserAddressEdit(main_box);
     }
+
+    if (action === "active-orders") {
+      openUserActiveOrders(main_box);
+    }
+
+    if (action === "completed-orders") {
+      openUserCompletedOrders(main_box);
+    }
   };
 }
 
@@ -163,15 +203,19 @@ export function renderProfile(main_box) {
   </div>
 
   <!-- ========== MIDDLE ========== -->
-  <div class="profile_middle flex flex-col lg:flex-row flex-1">
+  <div class="profile_middle flex flex-col lg:flex-row flex-1 min-h-0">
 
     <!-- option_menu -->
     <div class="option_menu w-full lg:w-80 px-4 py-3 text-sm bg-white">
       <div class="flex flex-col gap-2">
-        <div class="option-item cursor-pointer hover:underline">
-          Активные заказы
-        </div>
-        <div class="option-item cursor-pointer hover:underline">
+<div 
+  class="option-item cursor-pointer hover:underline"
+  data-action="active-orders"
+>
+  Активные заказы
+</div>
+
+        <div class="option-item cursor-pointer hover:underline" data-action="completed-orders">
           История заказов
         </div>
         <div class="option-item cursor-pointer hover:underline">
@@ -190,7 +234,7 @@ export function renderProfile(main_box) {
     </div>
 
     <!-- right content (пока пусто) -->
-    <div class="profile_content hidden lg:block flex-1 px-4 py-4">
+    <div class="profile_content hidden lg:block flex-1 px-4 py-4 overflow-hidden flex flex-col min-h-0">
       <!-- сюда потом -->
     </div>
 

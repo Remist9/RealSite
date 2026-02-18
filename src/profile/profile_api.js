@@ -24,10 +24,7 @@ export async function addUserAddress(address) {
 }
 
 export async function getUserAddress() {
-  return await apiFetch(`${API_URL}/profile/address`, {
-    method: "GET",
-    credentials: "include",
-  });
+  return await apiFetch(`${API_URL}/profile/address`);
 }
 
 export async function deleteUserAddress(addressId) {
@@ -44,4 +41,8 @@ export async function updateUserAddress(addressId, address) {
     },
     body: JSON.stringify({ address }),
   });
+}
+
+export async function getUserActiveOrders() {
+  return apiFetch(`${API_URL}/profile/orders/active`);
 }

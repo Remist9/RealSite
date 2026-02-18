@@ -3,6 +3,7 @@ from app.auth.session import get_current_user_id
 from app.db import get_db
 from ..schemas import ProfileResponse, ProfileUpdateRequest, AddressCreate, AddressOut
 from typing import List
+from app.catalog.catalog_index import CATALOG_BY_ID
 
 router = APIRouter(prefix="/profile", tags=["profile"])
 
@@ -230,3 +231,65 @@ def update_my_address(
 
     finally:
         cur.close()
+
+@router.get("/orders/active")
+def get_my_active_orders(request: Request):
+    user_id = get_current_user_id(request)
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("""
+            SELECT 
+                id,
+                t_items,
+                t_cost,
+                t_weight,
+                created_at,
+                address
+            FROM active_orders
+            WHERE user_id = %s
+            ORDER BY created_at DESC
+        """, (user_id,))
+
+        rows = cur.fetchall()
+
+        orders = []
+
+        for row in rows:
+            raw_items = row[1]  # [[id, qty], [id, qty]]
+
+            processed_items = []
+
+            for product_id, quantity in raw_items:
+                product = CATALOG_BY_ID.get(product_id)
+
+                if not product:
+                    continue  # если товара вдруг нет
+
+                processed_items.append({
+                    "title": product["title"],
+                    "quantity": quantity
+                })
+
+            orders.append({
+                "id": row[0],
+                "items": processed_items,
+                "total_cost": float(row[2]),
+                "total_weight": float(row[3]),
+                "created_at": row[4],
+                "address": row[5],
+            })
+
+        return {
+            "success": True,
+            "orders": orders
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        cur.close()
+        conn.close()

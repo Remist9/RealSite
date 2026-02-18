@@ -17,14 +17,12 @@ export function userAddressEdit(addresses = [], { container } = {}) {
   const sheet = document.createElement("div");
   sheet.className = `
   w-full bg-white
-  ${isEmbedded ? "rounded-xl" : "rounded-t-2xl"}
-  min-h-[70vh] max-h-[90vh]
+  ${isEmbedded ? "rounded-xl h-full" : "rounded-t-2xl min-h-[70vh] max-h-[90vh]"}
   flex flex-col
   transition-transform duration-300
   translate-y-0
   ${isEmbedded ? "" : "touch-pan-y"}
 `;
-
   sheet.innerHTML = `
   ${
     isEmbedded
