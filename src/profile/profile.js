@@ -1,7 +1,7 @@
 import { showLogoutConfirm } from "../auth/logout_modal.js";
 import { logoutRequest } from "../auth/auth_actions.js";
 import { showAuthModal } from "../auth/auth_btn.js";
-import { getMyProfile, getUserAddress } from "./profile_api.js";
+import { getMyProfile, getUserAddress, getUserSummary } from "./profile_api.js";
 import { userInfoEdit } from "./user_info_edit.js";
 import { userAddressEdit } from "./user_address_edit.js";
 import { userActiveOrdersFrame } from "./user_active_orders_frame.js";
@@ -86,6 +86,25 @@ async function loadProfile(main_box) {
   } catch (err) {
     console.error("Ошибка загрузки профиля:", err);
     showAuthModal();
+  }
+}
+
+async function loadUserSummary(main_box) {
+  try {
+    const response = await getUserSummary();
+    const summary = response?.summary;
+
+    if (!summary) return;
+
+    const statCards = main_box.querySelectorAll(".stat-card .text-lg");
+
+    if (statCards.length === 3) {
+      statCards[0].textContent = summary.total_cost.toLocaleString();
+      statCards[1].textContent = summary.total_orders;
+      statCards[2].textContent = summary.total_weight;
+    }
+  } catch (err) {
+    console.error("Ошибка загрузки статистики:", err);
   }
 }
 
@@ -283,4 +302,5 @@ export function renderProfile(main_box) {
 
   // загрузка данных
   loadProfile(main_box);
+  loadUserSummary(main_box);
 }

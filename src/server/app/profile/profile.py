@@ -293,3 +293,101 @@ def get_my_active_orders(request: Request):
     finally:
         cur.close()
         conn.close()
+
+@router.get("/orders/completed")
+def get_my_completed_orders(request: Request):
+    user_id = get_current_user_id(request)
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("""
+            SELECT 
+                id,
+                t_items,
+                t_cost,
+                t_weight,
+                completed_at,
+                address
+            FROM completed_orders
+            WHERE user_id = %s
+            ORDER BY completed_at DESC
+        """, (user_id,))
+
+        rows = cur.fetchall()
+
+        orders = []
+
+        for row in rows:
+            raw_items = row[1]
+
+            processed_items = []
+
+            for product_id, quantity in raw_items:
+                product = CATALOG_BY_ID.get(product_id)
+
+                if not product:
+                    continue
+
+                processed_items.append({
+                    "title": product["title"],
+                    "quantity": quantity
+                })
+
+            orders.append({
+                "id": row[0],
+                "items": processed_items,
+                "total_cost": float(row[2]),
+                "total_weight": float(row[3]),
+                "completed_at": row[4],
+                "address": row[5],
+            })
+
+        return {
+            "success": True,
+            "orders": orders
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        cur.close()
+        conn.close()
+
+
+@router.get("/orders/completed/summary")
+def get_completed_orders_summary(request: Request):
+    user_id = get_current_user_id(request)
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    try:
+        cur.execute("""
+            SELECT 
+                COUNT(*) AS total_orders,
+                COALESCE(SUM(t_cost), 0) AS total_cost,
+                COALESCE(SUM(t_weight), 0) AS total_weight
+            FROM completed_orders
+            WHERE user_id = %s
+        """, (user_id,))
+
+        result = cur.fetchone()
+
+        return {
+            "success": True,
+            "summary": {
+                "total_orders": result[0],
+                "total_cost": float(result[1]),
+                "total_weight": float(result[2])
+            }
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        cur.close()
+        conn.close()

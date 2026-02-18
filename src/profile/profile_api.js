@@ -46,3 +46,11 @@ export async function updateUserAddress(addressId, address) {
 export async function getUserActiveOrders() {
   return apiFetch(`${API_URL}/profile/orders/active`);
 }
+
+export async function getUserCompletedOrders() {
+  return apiFetch(`${API_URL}/profile/orders/completed`);
+}
+
+export async function getUserSummary() {
+  return apiFetch(`${API_URL}/profile/orders/completed/summary`);
+}
