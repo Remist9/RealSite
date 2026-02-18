@@ -1,8 +1,10 @@
 from fastapi import Depends, HTTPException, status, APIRouter
 from ..auth.session import get_current_user
 from app.db import get_db
+from app.catalog.catalog_index import CATALOG_BY_ID
+from .service import delete_active_order_by_id,complete_active_order
 
-router = APIRouter(prefix="/profile", tags=["profile"])
+router = APIRouter(prefix="/admin", tags=["admin"])
 
 def require_role(role: str):
     def role_checker(current_user = Depends(get_current_user)):
@@ -22,7 +24,7 @@ def get_users_active_orders(
 ):
     conn = get_db()
     cur = conn.cursor()
-    
+
     try:
         cur.execute("""
             SELECT 
@@ -80,3 +82,30 @@ def get_users_active_orders(
     finally:
         cur.close()
         conn.close()
+
+
+@router.delete("/order/active/{order_id}")
+def del_user_active_order(
+    order_id: int,
+    admin = Depends(require_role("admin"))
+):
+    deleted_id = delete_active_order_by_id(order_id)
+
+    return {
+        "success": True,
+        "deleted_order_id": deleted_id
+    }
+
+
+
+@router.patch("/order/active/{order_id}")
+def complete_user_order(
+    order_id: int,
+    admin = Depends(require_role("admin"))
+):
+    completed_id = complete_active_order(order_id)
+
+    return {
+        "success": True,
+        "completed_order_id": completed_id
+    }
