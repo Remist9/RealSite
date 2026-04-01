@@ -1,4 +1,4 @@
-# 🛒 RealSite — Интернет-магазин
+<img width="1076" height="177" alt="image" src="https://github.com/user-attachments/assets/ec74bf63-9f29-461f-8a14-c3861354c298" /># 🛒 RealSite — Интернет-магазин
 
 Полноценный веб-проект интернет-магазина, реализованный с использованием современного стека: **FastAPI + PostgreSQL + Tailwind CSS**.
 
@@ -60,7 +60,7 @@
 ### 1. Клонирование репозитория
 
 ```bash
-git clone https://github.com/USERNAME/REPO.git
+git clone https://github.com/Remist9/RealSite.git
 cd RealSite
 ```
 
