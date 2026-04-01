@@ -13,14 +13,14 @@
     <link rel="stylesheet" href="/style.css" />
   </head>
 
-  <body class="min-h-screen m-0 bg-linear-to-br from-blue200 to-blue-700">
+  <body class="h-dvh overflow-hidden m-0 bg-linear-to-br from-blue200 to-blue-700">
     <!-- центрирующий wrapper -->
-    <div class="min-h-screen flex justify-center">
+    <div class="h-full flex justify-center">
 
       <!-- контейнер приложения -->
       <div
         class="
-          h-screen
+          h-full
           w-full
           lg:max-w-6xl
           bg-black/60
@@ -36,7 +36,13 @@
           <button data-page="catalog" class="nav-btn font-medium hover:underline"><div class="font-bold text-lg">Логотип</div></button>
           
           <div class="flex-1 flex justify-center">
-            <div class="w-1/2 text-center">ПОИСК</div>
+            <div class="w-1/2">
+  <input
+    type="text"
+    placeholder="Поиск"
+    class="w-full h-9 px-3 rounded-md bg-white text-sm outline-none focus:ring-2 focus:ring-blue-600"
+  />
+</div>
           </div>
 
 <div class="flex gap-6">
@@ -60,7 +66,7 @@
         <!-- ================= ОСНОВНОЙ КОНТЕНТ ================= -->
         <div
           id="main_box"
-          class="flex-1 bg-red-500 transition-colors duration-300 overflow-hidden"
+          class="flex-1 bg-red-500 transition-colors duration-300 overflow-y-auto min-h-0"
         ></div>
 
         <!-- ================= МОБИЛКА: НИЖНЯЯ НАВИГАЦИЯ ================= -->

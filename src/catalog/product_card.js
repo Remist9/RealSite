@@ -6,7 +6,7 @@ function isCatalogLocked() {
 }
 
 export function createProductCard(product, { quantity = 0 } = {}) {
-  const { title, cost } = product;
+  const { name, cost } = product;
   const card = document.createElement("div");
 
   card.className = `
@@ -16,12 +16,18 @@ export function createProductCard(product, { quantity = 0 } = {}) {
 
   card.innerHTML = `
     <div class="px-2 py-1">
-      <span class="text-xs font-medium truncate block">${title}</span>
+      <span class="text-xs font-medium truncate block">${name}</span>
     </div>
 
-    <div class="flex-1 bg-gray-100 flex items-center justify-center">
-      IMG
-    </div>
+<div class="flex-1 bg-gray-100 flex items-center justify-center overflow-hidden">
+${
+  product.image
+    ? `<img src="http://${location.hostname}:8000/${product.image}" 
+           alt="" 
+           class="w-full h-full object-contain p-2" />`
+    : `<div class="text-gray-400 text-xs">Нет фото</div>`
+}
+</div>
 
     <div class="h-10 px-2 flex items-center" data-role="card-bottom">
       <span class="text-sm font-semibold mx-auto">${cost} ₸</span>

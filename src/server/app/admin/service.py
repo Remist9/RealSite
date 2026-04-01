@@ -9,7 +9,7 @@ def delete_active_order_by_id(order_id: int) -> int:
 
     try:
         cur.execute(
-            "DELETE FROM active_orders WHERE id = %s RETURNING id",
+            "DELETE FROM orders WHERE id = %s RETURNING id",
             (order_id,)
         )
 
@@ -37,11 +37,11 @@ def complete_active_order(order_id: int) -> int:
     cur = conn.cursor()
 
     try:
-        # 1️⃣ Получаем заказ
+        # Проверяем, что заказ существует
         cur.execute(
             """
-            SELECT user_id, t_items, t_cost, t_weight, address
-            FROM active_orders
+            SELECT id
+            FROM orders
             WHERE id = %s
             """,
             (order_id,)
@@ -55,30 +55,22 @@ def complete_active_order(order_id: int) -> int:
                 detail="Заказ не найден"
             )
 
-        user_id, t_items, t_cost, t_weight, address = order
-
-        # 2️⃣ Вставляем в completed_orders
+        # Меняем статус
         cur.execute(
             """
-            INSERT INTO completed_orders
-            (user_id, t_items, t_cost, t_weight, address)
-            VALUES (%s, %s::jsonb, %s, %s, %s)
+            UPDATE orders
+            SET status = 'completed'
+            WHERE id = %s
             RETURNING id
             """,
-            (user_id, json.dumps(t_items), t_cost, t_weight, address)
-        )
-
-        completed_id = cur.fetchone()[0]
-
-        # 3️⃣ Удаляем из active_orders
-        cur.execute(
-            "DELETE FROM active_orders WHERE id = %s",
             (order_id,)
         )
 
+        updated = cur.fetchone()
+
         conn.commit()
 
-        return completed_id
+        return updated[0]
 
     except Exception:
         conn.rollback()

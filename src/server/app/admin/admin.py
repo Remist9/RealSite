@@ -1,7 +1,6 @@
 from fastapi import Depends, HTTPException, status, APIRouter
 from ..auth.session import get_current_user
 from app.db import get_db
-from app.catalog.catalog_index import CATALOG_BY_ID
 from .service import delete_active_order_by_id,complete_active_order
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -27,53 +26,65 @@ def get_users_active_orders(
 
     try:
         cur.execute("""
-            SELECT 
-                id,
-                user_id,
-                t_items,
-                t_cost,
-                t_weight,
-                created_at,
-                address
-            FROM active_orders
-            ORDER BY created_at DESC
+            SELECT
+                o.id,
+                o.user_id,
+                o.total_cost,
+                o.total_weight,
+                o.created_at,
+                o.address,
+                oi.product_id,
+                oi.quantity,
+                oi.name_snapshot,
+                oi.price_snapshot,
+                oi.weight_snapshot
+            FROM orders o
+            JOIN order_items oi ON oi.order_id = o.id
+            WHERE o.status = 'pending'
+            ORDER BY o.created_at DESC
         """)
 
         rows = cur.fetchall()
 
-        orders = []
+        orders_dict = {}
 
         for row in rows:
-            order_id = row[0]
-            user_id = row[1]
-            raw_items = row[2]
+            (
+                order_id,
+                user_id,
+                total_cost,
+                total_weight,
+                created_at,
+                address,
+                product_id,
+                quantity,
+                name_snapshot,
+                price_snapshot,
+                weight_snapshot
+            ) = row
 
-            processed_items = []
+            if order_id not in orders_dict:
+                orders_dict[order_id] = {
+                    "id": order_id,
+                    "user_id": user_id,
+                    "items": [],
+                    "total_cost": float(total_cost),
+                    "total_weight": float(total_weight),
+                    "created_at": created_at,
+                    "address": address,
+                }
 
-            for product_id, quantity in raw_items:
-                product = CATALOG_BY_ID.get(product_id)
-
-                if not product:
-                    continue
-
-                processed_items.append({
-                    "title": product["title"],
-                    "quantity": quantity
-                })
-
-            orders.append({
-                "id": order_id,
-                "user_id": user_id,  # 👈 админ должен видеть чей заказ
-                "items": processed_items,
-                "total_cost": float(row[3]),
-                "total_weight": float(row[4]),
-                "created_at": row[5],
-                "address": row[6],
+            orders_dict[order_id]["items"].append({
+                "product_id": product_id,
+                "name": name_snapshot,
+                "price": float(price_snapshot),
+                "quantity": quantity,
+                "weight": float(weight_snapshot) if weight_snapshot else 0,
             })
 
         return {
             "success": True,
-            "orders": orders
+            "orders": list(orders_dict.values())
         }
 
     except Exception as e:

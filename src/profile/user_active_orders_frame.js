@@ -73,7 +73,7 @@ export function userActiveOrdersFrame({ container } = {}) {
             .map(
               (item, index) => `
           <div>
-            ${index + 1}. ${item.title} × ${item.quantity}
+            ${index + 1}. ${item.name} × ${item.quantity}
           </div>
         `,
             )

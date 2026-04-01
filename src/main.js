@@ -6,6 +6,8 @@ import { renderSale } from "./sale/sale.js";
 import { renderCatalog } from "./catalog/catalog.js";
 import { renderCart } from "./cart/cart.js";
 import { renderAdmin } from "./admin/admin.js";
+import { fetchCatalogSearch } from "./catalog/catalog_api.js";
+import { createSearchHandler } from "./catalog/search.js";
 
 const main_box = document.getElementById("main_box");
 
@@ -106,5 +108,29 @@ document.querySelectorAll(".nav-btn").forEach((btn) => {
   });
 });
 
+const globalInput = document.querySelector(
+  'header input[placeholder="Поиск"]'
+);
+
+createSearchHandler({
+  input: globalInput,
+  fetchFn: fetchCatalogSearch,
+  renderFn: (items) => {
+    window.dispatchEvent(
+      new CustomEvent("global-search", {
+        detail: items,
+      })
+    );
+  },
+  resetFn: async () => {
+    window.dispatchEvent(
+      new CustomEvent("global-search-reset")
+    );
+  },
+});
+
+
 window.addEventListener("hashchange", initPageFromUrl);
 initPageFromUrl();
+
+

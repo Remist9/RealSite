@@ -20,3 +20,23 @@ export async function fetchCatalogByCategories(filters = {}) {
     throw err;
   }
 }
+
+export async function fetchCatalogSearch(query = "") {
+  try {
+    const response = await fetch(
+      `${API_URL}/catalog/search?q=${encodeURIComponent(query)}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Ошибка поиска каталога");
+    }
+
+    return await response.json();
+  } catch (err) {
+    console.error("Catalog search API error:", err);
+    throw err;
+  }
+}

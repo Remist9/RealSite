@@ -3,7 +3,6 @@ from app.auth.session import get_current_user_id
 from app.db import get_db
 from ..schemas import ProfileResponse, ProfileUpdateRequest, AddressCreate, AddressOut
 from typing import List
-from app.catalog.catalog_index import CATALOG_BY_ID
 
 router = APIRouter(prefix="/profile", tags=["profile"])
 
@@ -240,55 +239,66 @@ def get_my_active_orders(request: Request):
     cur = conn.cursor()
 
     try:
+        # 1️⃣ Получаем все активные заказы
         cur.execute("""
-            SELECT 
-                id,
-                t_items,
-                t_cost,
-                t_weight,
-                created_at,
-                address
-            FROM active_orders
-            WHERE user_id = %s
-            ORDER BY created_at DESC
+            SELECT
+                o.id,
+                o.total_cost,
+                o.total_weight,
+                o.created_at,
+                o.address,
+                oi.product_id,
+                oi.quantity,
+                oi.name_snapshot,
+                oi.price_snapshot,
+                oi.weight_snapshot
+            FROM orders o
+            JOIN order_items oi ON oi.order_id = o.id
+            WHERE o.user_id = %s
+              AND o.status = 'pending'
+            ORDER BY o.created_at DESC
         """, (user_id,))
 
         rows = cur.fetchall()
 
-        orders = []
+        orders_dict = {}
 
         for row in rows:
-            raw_items = row[1]  # [[id, qty], [id, qty]]
+            (
+                order_id,
+                total_cost,
+                total_weight,
+                created_at,
+                address,
+                product_id,
+                quantity,
+                name_snapshot,
+                price_snapshot,
+                weight_snapshot
+            ) = row
 
-            processed_items = []
+            if order_id not in orders_dict:
+                orders_dict[order_id] = {
+                    "id": order_id,
+                    "items": [],
+                    "total_cost": float(total_cost),
+                    "total_weight": float(total_weight),
+                    "created_at": created_at,
+                    "address": address,
+                }
 
-            for product_id, quantity in raw_items:
-                product = CATALOG_BY_ID.get(product_id)
-
-                if not product:
-                    continue  # если товара вдруг нет
-
-                processed_items.append({
-                    "title": product["title"],
-                    "quantity": quantity
-                })
-
-            orders.append({
-                "id": row[0],
-                "items": processed_items,
-                "total_cost": float(row[2]),
-                "total_weight": float(row[3]),
-                "created_at": row[4],
-                "address": row[5],
+            orders_dict[order_id]["items"].append({
+                "product_id": product_id,
+                "name": name_snapshot,
+                "price": float(price_snapshot),
+                "quantity": quantity,
+                "weight": float(weight_snapshot) if weight_snapshot else 0,
             })
 
         return {
             "success": True,
-            "orders": orders
+            "orders": list(orders_dict.values())
         }
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
     finally:
         cur.close()
@@ -303,54 +313,64 @@ def get_my_completed_orders(request: Request):
 
     try:
         cur.execute("""
-            SELECT 
-                id,
-                t_items,
-                t_cost,
-                t_weight,
-                completed_at,
-                address
-            FROM completed_orders
-            WHERE user_id = %s
-            ORDER BY completed_at DESC
+            SELECT
+                o.id,
+                o.total_cost,
+                o.total_weight,
+                o.created_at,
+                o.address,
+                oi.product_id,
+                oi.quantity,
+                oi.name_snapshot,
+                oi.price_snapshot,
+                oi.weight_snapshot
+            FROM orders o
+            JOIN order_items oi ON oi.order_id = o.id
+            WHERE o.user_id = %s
+              AND o.status = 'completed'
+            ORDER BY o.created_at DESC
         """, (user_id,))
 
         rows = cur.fetchall()
 
-        orders = []
+        orders_dict = {}
 
         for row in rows:
-            raw_items = row[1]
+            (
+                order_id,
+                total_cost,
+                total_weight,
+                created_at,
+                address,
+                product_id,
+                quantity,
+                name_snapshot,
+                price_snapshot,
+                weight_snapshot
+            ) = row
 
-            processed_items = []
+            if order_id not in orders_dict:
+                orders_dict[order_id] = {
+                    "id": order_id,
+                    "items": [],
+                    "total_cost": float(total_cost),
+                    "total_weight": float(total_weight),
+                    "completed_at": created_at,
+                    "address": address,
+                }
 
-            for product_id, quantity in raw_items:
-                product = CATALOG_BY_ID.get(product_id)
-
-                if not product:
-                    continue
-
-                processed_items.append({
-                    "title": product["title"],
-                    "quantity": quantity
-                })
-
-            orders.append({
-                "id": row[0],
-                "items": processed_items,
-                "total_cost": float(row[2]),
-                "total_weight": float(row[3]),
-                "completed_at": row[4],
-                "address": row[5],
+            orders_dict[order_id]["items"].append({
+                "product_id": product_id,
+                "name": name_snapshot,
+                "price": float(price_snapshot),
+                "quantity": quantity,
+                "weight": float(weight_snapshot) if weight_snapshot else 0,
             })
 
         return {
             "success": True,
-            "orders": orders
+            "orders": list(orders_dict.values())
         }
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
     finally:
         cur.close()
@@ -368,10 +388,11 @@ def get_completed_orders_summary(request: Request):
         cur.execute("""
             SELECT 
                 COUNT(*) AS total_orders,
-                COALESCE(SUM(t_cost), 0) AS total_cost,
-                COALESCE(SUM(t_weight), 0) AS total_weight
-            FROM completed_orders
+                COALESCE(SUM(total_cost), 0) AS total_cost,
+                COALESCE(SUM(total_weight), 0) AS total_weight
+            FROM orders
             WHERE user_id = %s
+              AND status = 'completed'
         """, (user_id,))
 
         result = cur.fetchone()
@@ -384,9 +405,6 @@ def get_completed_orders_summary(request: Request):
                 "total_weight": float(result[2])
             }
         }
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
     finally:
         cur.close()

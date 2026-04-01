@@ -9,8 +9,10 @@ class RegisterRequest(BaseModel):
     @field_validator("login")
     @classmethod
     def validate_login(cls, v: str):
-        if not re.fullmatch(r"[a-zA-Z0-9]+", v):
-            raise ValueError("Логин может содержать только латинские буквы и цифры")
+        if not re.fullmatch(r"[a-zA-Z0-9@_]+", v):
+            raise ValueError(
+                "Логин может содержать только латинские буквы, цифры и символ @"
+            )
 
         if not re.search(r"[a-zA-Z]", v):
             raise ValueError("Логин должен содержать хотя бы одну букву")

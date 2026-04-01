@@ -8,8 +8,12 @@ export function createCartCard(item, { onChange } = {}) {
     flex items-center p-3 gap-3
   `;
 
-  const image = item.image
-    ? `<img src="${item.image}" class="w-20 h-20 object-contain rounded-md bg-white" />`
+  const imageSrc = item.image
+    ? `http://${location.hostname}:8000/${item.image}`
+    : null;
+
+  const image = imageSrc
+    ? `<img src="${imageSrc}" class="w-20 h-20 object-contain rounded-md bg-white" />`
     : `<div class="w-20 h-20 rounded-md bg-white/60 flex items-center justify-center text-xs text-gray-500">
         no image
       </div>`;
@@ -41,7 +45,7 @@ export function createCartCard(item, { onChange } = {}) {
             text-ellipsis
             leading-tight
             line-clamp-2">
-          ${item.title}
+          ${item.name}
         </div>
       </div>
 

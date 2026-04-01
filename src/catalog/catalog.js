@@ -1,6 +1,7 @@
-import { fetchCatalogByCategories } from "./catalog_api.js";
+import { fetchCatalogByCategories,fetchCatalogSearch  } from "./catalog_api.js";
 import { createProductCard } from "./product_card.js";
 import { fetchCartRaw } from "../cart/cart_api.js";
+import { createSearchHandler } from "./search.js";
 
 let cartItems = {};
 
@@ -44,12 +45,11 @@ function renderCategoriesList() {
 
 function renderLocalSearch() {
   return `
-    <div class="relative flex-1">
-      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
+    <div class="flex-1">
       <input
         type="text"
         placeholder="Поиск"
-        class="w-full h-8 pl-9 pr-3 rounded-md bg-gray-100 text-sm outline-none"
+        class="w-full h-9 px-3 rounded-md bg-gray-100 text-sm outline-none focus:ring-2 focus:ring-blue-400"
       />
     </div>
   `;
@@ -61,61 +61,63 @@ function renderCatalogLayout(main_box, ui) {
   main_box.innerHTML = `
     <div class="catalog-page flex flex-col h-full min-h-0 relative">
 
-${
-  !ui.isSidebarCategories
-    ? `
-  <div class="catalog-header h-12 sticky top-0 bg-white border-b flex items-center gap-3 px-4 z-20">
-    <div class="catalog-menu cursor-pointer text-lg">🗒️</div>
-    ${ui.hasLocalSearch ? renderLocalSearch() : ""}
-  </div>
-`
-    : ""
-}
+      ${
+        !ui.isSidebarCategories
+          ? `
+        <div class="catalog-header h-12 sticky top-0 bg-white border-b flex items-center gap-3 px-4 z-20">
+          <div class="catalog-menu cursor-pointer text-lg">🗒️</div>
+          ${ui.hasLocalSearch ? renderLocalSearch() : ""}
+        </div>
+        `
+          : ""
+      }
 
       <div class="catalog-body flex flex-1 min-h-0">
 
         ${
           ui.isSidebarCategories
             ? `
-              <aside class="catalog-sidebar w-56 shrink-0 border-r bg-white flex flex-col">
-                <div class="flex items-center justify-between px-4 py-2 border-b">
-                  <span class="text-sm font-medium">Категории</span>
-                  <button class="reset-categories text-gray-400 hover:text-red-600">🔄</button>
-                </div>
-                <div id="categories-root"></div>
-              </aside>
+            <aside class="catalog-sidebar w-56 shrink-0 border-r bg-white flex flex-col">
+              <div class="flex items-center justify-between px-4 py-2 border-b">
+                <span class="text-sm font-medium">Категории</span>
+                <button class="reset-categories text-gray-400 hover:text-red-600">🔄</button>
+              </div>
+              <div id="categories-root"></div>
+            </aside>
             `
             : ""
         }
 
-        <div class="catalog-content flex-1 min-h-0 overflow-auto relative">
-${
-  !ui.isSidebarCategories
-    ? `<div class="catalog-overlay fixed inset-0 hidden z-20"></div>`
-    : ""
-}
-
-          ${
-            !ui.isSidebarCategories
-              ? `
-                <div class="catalog-categories absolute top-2 left-2 bg-white border rounded-md shadow-md hidden z-30">
-                  <div class="flex">
-                    <div class="w-48" id="categories-root"></div>
-                    <div class="w-8 flex justify-center pt-2">
-                      <button class="reset-categories text-gray-400 hover:text-red-600">🔄</button>
-                    </div>
-                  </div>
-                </div>
-              `
-              : ""
-          }
-
+        <div class="catalog-content flex-1 min-h-0 overflow-auto">
           <div class="catalog-grid p-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4"></div>
         </div>
       </div>
+
+      ${
+        !ui.isSidebarCategories
+          ? `
+          <!-- Overlay -->
+          <div class="catalog-overlay fixed inset-0 bg-black/30 hidden z-40"></div>
+
+          <!-- Mobile Dropdown -->
+          <div class="catalog-categories fixed top-14 left-3 right-3
+               max-h-[70vh] overflow-y-auto
+               bg-white rounded-xl shadow-xl
+               hidden z-50">
+            <div class="flex items-center justify-between px-4 py-3 border-b">
+              <span class="text-sm font-medium">Категории</span>
+              <button class="reset-categories text-gray-400 hover:text-red-600">🔄</button>
+            </div>
+            <div id="categories-root"></div>
+          </div>
+          `
+          : ""
+      }
+
     </div>
   `;
 }
+
 
 /* -------------------- Main -------------------- */
 
@@ -129,6 +131,8 @@ export function renderCatalog(main_box, config = {}) {
 
   main_box.className = "flex-[11] overflow-hidden";
   renderCatalogLayout(main_box, ui);
+
+  
 
   /* ---------- CATEGORIES (ONE SOURCE) ---------- */
 
@@ -182,22 +186,36 @@ export function renderCatalog(main_box, config = {}) {
   menuBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
 
-    const isHidden = categoriesBox.classList.toggle("hidden");
-    overlay.classList.toggle("hidden", isHidden);
+    const isOpen = !categoriesBox.classList.contains("hidden");
 
-    window.isCatalogDropdownOpen = !isHidden;
-  });
-
-  overlay?.addEventListener("click", () => {
-    categoriesBox.classList.add("hidden");
-    overlay.classList.add("hidden");
-    window.isCatalogDropdownOpen = false;
-
-    if (isFilterDirty) {
-      updateCatalog();
-      isFilterDirty = false;
+    if (isOpen) {
+      closeDropdown();
+    } else {
+      openDropdown();
     }
   });
+
+function openDropdown() {
+  categoriesBox.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+  document.body.classList.add("overflow-hidden");
+  window.isCatalogDropdownOpen = true;
+}
+
+
+function closeDropdown() {
+  categoriesBox.classList.add("hidden");
+  overlay.classList.add("hidden");
+  document.body.classList.remove("overflow-hidden");
+  window.isCatalogDropdownOpen = false;
+
+  if (isFilterDirty) {
+    updateCatalog();
+    isFilterDirty = false;
+  }
+}
+
+overlay?.addEventListener("click", closeDropdown);
 
   categoriesBox?.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -235,6 +253,9 @@ export function renderCatalog(main_box, config = {}) {
 
     // 👇 НЕ removeItem
     sessionStorage.setItem(CATALOG_FILTER_KEY, JSON.stringify({}));
+    if (!ui.isSidebarCategories) {
+  closeDropdown();
+}
 
     isFilterDirty = false;
     syncUI();
@@ -243,54 +264,72 @@ export function renderCatalog(main_box, config = {}) {
 
   /* ---------- DATA ---------- */
 
-  async function updateCatalog() {
-    let payload = {};
+async function updateCatalog() {
+  let payload = {};
 
-    const hasAnySelected = Object.values(selectedCategories).some(
-      (set) => set.size > 0,
-    );
+  // 🔥 Всегда читаем актуальное состояние из sessionStorage
+  const saved = sessionStorage.getItem(CATALOG_FILTER_KEY);
 
-    const saved = sessionStorage.getItem(CATALOG_FILTER_KEY);
+  let selected = {};
 
-    // ✅ ПЕРВЫЙ ЗАПУСК ВКЛАДКИ → АКЦИИ
-    if (saved === null) {
-      payload = {
-        stock: ["all"],
-      };
-    }
-
-    // ✅ ПОСЛЕ ЛЮБОГО ДЕЙСТВИЯ ПОЛЬЗОВАТЕЛЯ
-    else if (hasAnySelected) {
-      for (const [g, set] of Object.entries(selectedCategories)) {
-        if (set.size) payload[g] = [...set];
-      }
-    }
-
-    // ✅ иначе payload = {} → все товары
-
+  if (saved) {
     try {
-      try {
-        const cart = await fetchCartRaw();
-        cartItems = cart.items || {};
-      } catch {
-        cartItems = {};
+      const parsed = JSON.parse(saved);
+      for (const [g, arr] of Object.entries(parsed)) {
+        selected[g] = new Set(arr);
       }
-
-      const data = await fetchCatalogByCategories(payload);
-      if (data?.items) renderItems(data.items);
-    } catch (e) {
-      console.warn(e);
+    } catch {
+      selected = {};
     }
   }
+
+  const hasAnySelected = Object.values(selected).some(
+    (set) => set.size > 0,
+  );
+
+  // ✅ Первый запуск вкладки → акции
+  if (saved === null) {
+    payload = {
+      stock: ["all"],
+    };
+  }
+  // ✅ Есть выбранные фильтры
+  else if (hasAnySelected) {
+    for (const [g, set] of Object.entries(selected)) {
+      if (set.size) payload[g] = [...set];
+    }
+  }
+
+  // иначе payload = {} → все товары
+
+  try {
+    // Обновляем корзину
+    try {
+      const cart = await fetchCartRaw();
+      cartItems = cart.items || {};
+    } catch {
+      cartItems = {};
+    }
+
+    // Получаем каталог
+    const data = await fetchCatalogByCategories(payload);
+
+    if (data?.items) {
+      renderItems(data.items);
+    }
+  } catch (e) {
+    console.warn("Catalog update error:", e);
+  }
+}
 
   function renderItems(items) {
     const grid = main_box.querySelector(".catalog-grid");
     grid.innerHTML = "";
 
-    for (const [title, p] of Object.entries(items)) {
+    for (const p of Object.values(items)) {
       const card = createProductCard(
         {
-          title,
+          name: p.name,      // ✅ теперь карточка получит name
           cost: p.cost ?? "—",
           description: p.description ?? "",
           image: p.image || null,
@@ -298,11 +337,31 @@ export function renderCatalog(main_box, config = {}) {
           factory: p.factory,
           size: p.size,
         },
-        { quantity: cartItems[p.id] ?? 0 },
+        { quantity: cartItems[p.id] ?? 0 }
       );
+
       grid.appendChild(card);
     }
   }
+
+  window.addEventListener("global-search", (e) => {
+    renderItems(e.detail);
+  });  
+  
+  window.addEventListener("global-search-reset", () => {
+  updateCatalog();
+});
+
+  const localInput = main_box.querySelector(
+  '.catalog-header input[placeholder="Поиск"]'
+);
+
+createSearchHandler({
+  input: localInput,
+  fetchFn: fetchCatalogSearch,
+  renderFn: renderItems,
+  resetFn: updateCatalog,
+});
 
   updateCatalog();
 }
