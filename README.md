@@ -90,7 +90,7 @@ npm run dev
 
 ## 🌐 Доступ к приложению
 
-* Backend: http://localhost:8000
+* Backend: http://localhost:7999
 * Frontend: http://localhost:5173
 
 ---
