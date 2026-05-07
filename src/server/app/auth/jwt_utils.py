@@ -1,5 +1,5 @@
 from jose import jwt, JWTError
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 SECRET_KEY = "CHANGE_ME_SUPER_SECRET"
 ALGORITHM = "HS256"
@@ -8,7 +8,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 1 день
 
 def create_access_token(data: dict, expire_minutes: int):
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=expire_minutes)
+    expire = datetime.now(timezone.utc) + timedelta(minutes=expire_minutes)
 
 
     to_encode.update({"exp": expire})

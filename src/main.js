@@ -17,9 +17,6 @@ let authInProgress = false;
 import { apiFetch } from "./api.js";
 
 async function requireAuth(onSuccess) {
-  if (authInProgress) return;
-  authInProgress = true;
-
   try {
     const data = await apiFetch(`${API_URL}/auth/check`);
 
@@ -28,18 +25,14 @@ async function requireAuth(onSuccess) {
       return;
     }
 
-    // 🔴 Если админ — показываем админку
     if (data.role === "admin") {
       renderAdmin(main_box);
       return;
     }
 
-    // 🟢 Обычный пользователь
     onSuccess();
   } catch (err) {
     console.error(err);
-  } finally {
-    authInProgress = false;
   }
 }
 
@@ -64,15 +57,7 @@ function renderPage(page) {
 
   switch (page) {
     case "sale":
-      if (isDesktop) {
-        // на ПК sale = режим каталога
-        renderCatalog(main_box, {
-          search: "none",
-          categories: "sidebar",
-        });
-      } else {
-        renderSale(main_box);
-      }
+      renderSale(main_box);
       break;
 
     case "catalog":
@@ -108,9 +93,7 @@ document.querySelectorAll(".nav-btn").forEach((btn) => {
   });
 });
 
-const globalInput = document.querySelector(
-  'header input[placeholder="Поиск"]'
-);
+const globalInput = document.querySelector('header input[placeholder="Поиск"]');
 
 createSearchHandler({
   input: globalInput,
@@ -119,18 +102,13 @@ createSearchHandler({
     window.dispatchEvent(
       new CustomEvent("global-search", {
         detail: items,
-      })
+      }),
     );
   },
   resetFn: async () => {
-    window.dispatchEvent(
-      new CustomEvent("global-search-reset")
-    );
+    window.dispatchEvent(new CustomEvent("global-search-reset"));
   },
 });
 
-
 window.addEventListener("hashchange", initPageFromUrl);
 initPageFromUrl();
-
-

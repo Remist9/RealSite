@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/style.css" />
   </head>
 
-  <body class="h-dvh overflow-hidden m-0 bg-linear-to-br from-blue200 to-blue-700">
+  <body class="h-dvh overflow-hidden m-0 bg-zinc-100">
     <!-- центрирующий wrapper -->
     <div class="h-full flex justify-center">
 
@@ -22,28 +22,55 @@
         class="
           h-full
           w-full
-          lg:max-w-6xl
-          bg-black/60
+          2xl:max-w-[1700px]
+          bg-white
           flex
           flex-col
           shadow-2xl
         "
       >
         <!-- ================= ПК: ВЕРХНЯЯ ПАНЕЛЬ ================= -->
-        <header
-          class="hidden lg:flex h-14 bg-blue-400 border-b border-black px-6 items-center"
-        >
-          <button data-page="catalog" class="nav-btn font-medium hover:underline"><div class="font-bold text-lg">Логотип</div></button>
-          
-          <div class="flex-1 flex justify-center">
-            <div class="w-1/2">
-  <input
-    type="text"
-    placeholder="Поиск"
-    class="w-full h-9 px-3 rounded-md bg-white text-sm outline-none focus:ring-2 focus:ring-blue-600"
-  />
-</div>
-          </div>
+<header
+  class="
+    hidden lg:flex h-14
+    bg-zinc-400
+    border-b-2 border-zinc-500
+    
+    px-6 items-center
+  "
+>
+        <div class="flex items-center gap-6">
+          <!-- ЛОГОТИП -->
+          <button
+            data-page="sale"
+            class="nav-btn"
+          >
+            <div class="font-bold text-lg hover:underline">
+              Логотип
+            </div>
+          </button>
+
+          <!-- КАТАЛОГ -->
+          <button
+            data-page="catalog"
+            class="
+              nav-btn
+              font-bold text-lg hover:underline
+            "
+          >
+            Каталог
+          </button>
+        </div>
+                  
+                  <div class="flex-1 flex justify-center">
+                    <div class="w-1/2">
+          <input
+            type="text"
+            placeholder="Поиск"
+            class="w-full h-9 px-3 rounded-md bg-white text-sm outline-none focus:ring-2 focus:ring-blue-600"
+          />
+        </div>
+                  </div>
 
 <div class="flex gap-6">
   <button

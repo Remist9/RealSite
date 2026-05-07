@@ -67,11 +67,12 @@ export function userAddressEdit(addresses = [], { container } = {}) {
 
     /* ---------- ADD ---------- */
     if (action === "add-address") {
-      const changed = await userAddressAdd();
-      if (changed) {
+      const address = await userAddressAdd();
+
+      if (address) {
+        await addUserAddress(address);
         await refreshAddresses();
       }
-      return;
     }
 
     /* ---------- EDIT ---------- */
@@ -81,13 +82,20 @@ export function userAddressEdit(addresses = [], { container } = {}) {
       const addressObj = addresses.find((a) => a.id == addressId);
       if (!addressObj) return;
 
-      const changed = await userAddressAdd({
+      const newAddress = await userAddressAdd({
         initialValue: addressObj.address,
       });
 
-      if (changed) {
-        await refreshAddresses();
+      if (newAddress && newAddress !== addressObj.address) {
+        try {
+          console.log("newAddress:", newAddress, typeof newAddress);
+          await updateUserAddress(addressId, newAddress);
+          await refreshAddresses();
+        } catch (err) {
+          console.error("Ошибка обновления адреса", err);
+        }
       }
+
       return;
     }
 

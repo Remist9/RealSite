@@ -140,7 +140,6 @@ def get_my_address(
         )
 
         rows = cur.fetchall()
-        print(rows)
 
         # 3️⃣ возвращаем список (или пустой список)
         return [
@@ -197,6 +196,7 @@ def update_my_address(
     request: Request,
     db=Depends(get_db),
 ):
+
     # 1️⃣ user_id из токена
     user_id = get_current_user_id(request)
 

@@ -10,7 +10,15 @@ export function renderSale(main_box) {
   main_box.innerHTML = `
     <div class="flex flex-col h-full">
       <div class="flex-1 overflow-auto">
-        <div class="sale-grid p-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4"></div>
+          <div class="
+            sale-grid
+            p-4
+            grid
+            gap-4
+            grid-cols-2
+          sm:[grid-template-columns:repeat(auto-fill,minmax(220px,1fr))]
+          lg:[grid-template-columns:repeat(auto-fill,minmax(250px,1fr))]
+          "></div>
       </div>
     </div>
   `;

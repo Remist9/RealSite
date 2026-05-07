@@ -5,26 +5,53 @@ function isCatalogLocked() {
   return window.isCatalogCategoriesOpen === true;
 }
 
-export function createProductCard(product, { quantity = 0 } = {}) {
+export function createProductCard(
+  product,
+  { quantity = 0, isDesktop = false } = {},
+) {
   const { name, cost } = product;
   const card = document.createElement("div");
 
   card.className = `
-    aspect-square bg-white rounded-lg shadow
-    overflow-hidden flex flex-col
-  `;
+  bg-white
+  border border-zinc-200
+  rounded-2xl
+  shadow-sm
+  overflow-hidden
+  flex flex-col
+
+  w-full
+  max-w-none
+
+  sm:max-w-[240px]
+  lg:max-w-[320px]
+
+  h-fit
+
+  transition-all duration-200
+  hover:shadow-md
+  hover:-translate-y-1
+`;
 
   card.innerHTML = `
     <div class="px-2 py-1">
       <span class="text-xs font-medium truncate block">${name}</span>
     </div>
 
-<div class="flex-1 bg-gray-100 flex items-center justify-center overflow-hidden">
+<div class="
+  h-[120px]
+  sm:h-[150px]
+  lg:h-[190px]
+
+  bg-gray-100
+  flex items-center justify-center
+  overflow-hidden
+">
 ${
   product.image
     ? `<img src="http://${location.hostname}:8000/${product.image}" 
            alt="" 
-           class="w-full h-full object-contain p-2" />`
+           class="max-w-full max-h-full object-contain p-2" />`
     : `<div class="text-gray-400 text-xs">Нет фото</div>`
 }
 </div>
@@ -41,7 +68,7 @@ ${
   /* ---------- открытие полной карточки ---------- */
   card.addEventListener("click", () => {
     if (window.isCatalogCategoriesOpen) return;
-    showProductCardFull(product);
+    showProductCardFull(product, { isDesktop });
   });
 
   /* ---------- первичное добавление ---------- */
@@ -121,6 +148,19 @@ ${
   if (quantity > 0) {
     renderQuantityControls(quantity);
   }
+
+  window.addEventListener("cart-updated", (e) => {
+    const { productId, quantity } = e.detail;
+
+    // если событие не для этой карточки
+    if (productId !== product.id) return;
+
+    if (quantity <= 0) {
+      restoreInitialControls();
+    } else {
+      renderQuantityControls(quantity);
+    }
+  });
 
   return card;
 }

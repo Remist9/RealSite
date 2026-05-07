@@ -214,9 +214,6 @@ export function showAuthModal(onSuccess) {
             return data;
           })
           .then((data) => {
-            // тут успех
-            console.log("LOGIN OK:", data);
-
             overlay.remove();
             if (onSuccess) onSuccess();
           })

@@ -59,7 +59,6 @@ def get_current_user(request: Request) -> dict:
     user_id = payload.get("user_id")
     role = payload.get("role")
 
-    # 🔥 дополнительная проверка в БД
     conn = get_db()
     cur = conn.cursor()
 
@@ -69,16 +68,17 @@ def get_current_user(request: Request) -> dict:
             SELECT 1
             FROM user_sessions
             WHERE access_token = %s
-            AND expires_at > NOW()
+              AND expires_at > NOW()
             """,
             (token,)
         )
 
+        session_exists = cur.fetchone()
 
-        if not cur.fetchone():
+        if not session_exists:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Сессия отозвана"
+                detail="Сессия истекла или отозвана"
             )
 
         return {

@@ -11,6 +11,14 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+def set_auth_cookie(response, token, expire_minutes):
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        samesite="lax",
+        max_age=expire_minutes * 60,
+    )
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 def register(data: RegisterRequest, response: Response):
@@ -23,11 +31,11 @@ def register(data: RegisterRequest, response: Response):
         # 1️⃣ создаём пользователя
         cur.execute(
             """
-            INSERT INTO realsite_user (login, password_hash)
-            VALUES (%s, %s)
+            INSERT INTO realsite_user (login, password_hash, role)
+            VALUES (%s, %s, %s)
             RETURNING id
             """,
-            (data.login, password_hash)
+            (data.login, password_hash, "user")
         )
         user_id = cur.fetchone()[0]
 
@@ -42,12 +50,13 @@ def register(data: RegisterRequest, response: Response):
 
         # 3️⃣ создаём сессию
         role = "user"
+        expire_minutes = 60 * 24
         access_token, expires_at = create_access_token(
             {
                 "user_id": user_id,
                 "role": role
             },
-            60 * 24
+            expire_minutes
         )
 
         cur.execute(
@@ -62,12 +71,7 @@ def register(data: RegisterRequest, response: Response):
         conn.commit()
 
         # 4️⃣ ставим cookie БЕЗ max_age → session-cookie
-        response.set_cookie(
-            key="access_token",
-            value=access_token,
-            httponly=True,
-            samesite="lax",
-        )
+        set_auth_cookie(response, access_token, expire_minutes)
 
         return {"status": "ok"}
 
@@ -126,7 +130,7 @@ def login(data: LoginRequest, response: Response):
         if data.remember_me:
             expire_minutes = 60 * 24 * 30
         else:
-            expire_minutes = 60 * 24  # 1 день
+            expire_minutes = 60
 
         # 3. Генерируем access_token
         access_token, expires_at = create_access_token(
@@ -150,13 +154,7 @@ def login(data: LoginRequest, response: Response):
 
         conn.commit()
 
-        response.set_cookie(
-            key="access_token",
-            value=access_token,
-            httponly=True,
-            samesite="lax",
-            max_age=expire_minutes * 60
-        )
+        set_auth_cookie(response, access_token, expire_minutes)
 
 
         return {

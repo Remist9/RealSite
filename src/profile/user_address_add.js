@@ -1,5 +1,3 @@
-import { addUserAddress } from "./profile_api";
-
 export function userAddressAdd({ initialValue = "" } = {}) {
   return new Promise((resolve) => {
     const overlay = document.createElement("div");
@@ -37,22 +35,16 @@ export function userAddressAdd({ initialValue = "" } = {}) {
     overlay.onclick = (e) => {
       if (e.target === overlay) {
         overlay.remove();
-        resolve(false); // ❌ ничего не изменилось
+        resolve(null); // ❌ отмена
       }
     };
 
-    modal.querySelector("#save-address").onclick = async () => {
+    modal.querySelector("#save-address").onclick = () => {
       const value = modal.querySelector("#address-input").value.trim();
       if (!value) return;
 
-      try {
-        await addUserAddress(value); // 🔥 РЕАЛЬНЫЙ ЗАПРОС
-        overlay.remove();
-        resolve(true); // ✅ адрес добавлен
-      } catch (e) {
-        console.warn("add address error", e);
-        resolve(false);
-      }
+      overlay.remove();
+      resolve(value); // ✅ возвращаем строку
     };
   });
 }

@@ -71,25 +71,36 @@ def extract_items(filters: dict):
     return result
 
 def search_items(query: str, limit: int = 50):
-    query = normalize(query)
-    words = [w for w in query.split() if w]
+    query_norm = normalize(query)
+
+    print(query_norm )
+
+    words = [w for w in query_norm.split() if w]
 
     conn = get_db()
     cur = conn.cursor()
 
     sql = """
         SELECT id, name, category, product_group, cost, size, image,
-               similarity(normalized_blob, %s) AS sim
+            similarity(normalized_blob, %s) AS sim
         FROM products
         WHERE is_active = true
     """
 
-    params = [query]
+    params = [query_norm]
 
     for word in words:
-        sql += " AND normalized_blob ILIKE %s"
-        params.append(f"%{word}%")
+        variants = {word}
 
+        if "ja" in word:
+            variants.add(word.replace("ja", "ju"))
+
+        sql += " AND (" + " OR ".join(["normalized_blob ILIKE %s"] * len(variants)) + ")"
+
+        for v in variants:
+            params.append(f"%{v}%")
+
+    # 🔥 ВАЖНО — после цикла
     sql += """
         ORDER BY sim DESC
         LIMIT %s
@@ -111,7 +122,7 @@ def search_items(query: str, limit: int = 50):
         if image_path and image_exists(image_path):
             image_url = f"image/{image_path}"
         else:
-            image_url = None  # или "image/default.jpg"
+            image_url = None
 
         result[row[0]] = {
             "id": row[0],

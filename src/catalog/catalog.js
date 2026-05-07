@@ -1,4 +1,4 @@
-import { fetchCatalogByCategories,fetchCatalogSearch  } from "./catalog_api.js";
+import { fetchCatalogByCategories, fetchCatalogSearch } from "./catalog_api.js";
 import { createProductCard } from "./product_card.js";
 import { fetchCartRaw } from "../cart/cart_api.js";
 import { createSearchHandler } from "./search.js";
@@ -31,7 +31,7 @@ function renderCategoriesList() {
       ${CATEGORIES.map(
         (cat) => `
           <li
-            class="category-item px-4 py-2 cursor-pointer hover:bg-gray-100"
+            class="category-item px-4 py-2 cursor-pointer hover:bg-zinc-200"
             data-group="${cat.group}"
             data-category="${cat.id}"
           >
@@ -77,20 +77,27 @@ function renderCatalogLayout(main_box, ui) {
         ${
           ui.isSidebarCategories
             ? `
-            <aside class="catalog-sidebar w-56 shrink-0 border-r bg-white flex flex-col">
-              <div class="flex items-center justify-between px-4 py-2 border-b">
+            <aside class="catalog-sidebar w-56 shrink-0 bg-zinc-100 flex flex-col">
+              <div class="flex items-center justify-between px-4 py-2 bg-zinc-300">
                 <span class="text-sm font-medium">Категории</span>
                 <button class="reset-categories text-gray-400 hover:text-red-600">🔄</button>
               </div>
-              <div id="categories-root"></div>
+              <div id="categories-root" ></div>
             </aside>
             `
             : ""
         }
 
         <div class="catalog-content flex-1 min-h-0 overflow-auto">
-          <div class="catalog-grid p-2 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4"></div>
-        </div>
+          <div class="
+            catalog-grid
+            p-4
+            grid
+            gap-4
+            grid-cols-2
+          sm:[grid-template-columns:repeat(auto-fill,minmax(220px,1fr))]
+          lg:[grid-template-columns:repeat(auto-fill,minmax(250px,1fr))]
+          "></div>
       </div>
 
       ${
@@ -118,7 +125,6 @@ function renderCatalogLayout(main_box, ui) {
   `;
 }
 
-
 /* -------------------- Main -------------------- */
 
 export function renderCatalog(main_box, config = {}) {
@@ -131,8 +137,6 @@ export function renderCatalog(main_box, config = {}) {
 
   main_box.className = "flex-[11] overflow-hidden";
   renderCatalogLayout(main_box, ui);
-
-  
 
   /* ---------- CATEGORIES (ONE SOURCE) ---------- */
 
@@ -195,27 +199,26 @@ export function renderCatalog(main_box, config = {}) {
     }
   });
 
-function openDropdown() {
-  categoriesBox.classList.remove("hidden");
-  overlay.classList.remove("hidden");
-  document.body.classList.add("overflow-hidden");
-  window.isCatalogDropdownOpen = true;
-}
-
-
-function closeDropdown() {
-  categoriesBox.classList.add("hidden");
-  overlay.classList.add("hidden");
-  document.body.classList.remove("overflow-hidden");
-  window.isCatalogDropdownOpen = false;
-
-  if (isFilterDirty) {
-    updateCatalog();
-    isFilterDirty = false;
+  function openDropdown() {
+    categoriesBox.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+    window.isCatalogDropdownOpen = true;
   }
-}
 
-overlay?.addEventListener("click", closeDropdown);
+  function closeDropdown() {
+    categoriesBox.classList.add("hidden");
+    overlay.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+    window.isCatalogDropdownOpen = false;
+
+    if (isFilterDirty) {
+      updateCatalog();
+      isFilterDirty = false;
+    }
+  }
+
+  overlay?.addEventListener("click", closeDropdown);
 
   categoriesBox?.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -254,8 +257,8 @@ overlay?.addEventListener("click", closeDropdown);
     // 👇 НЕ removeItem
     sessionStorage.setItem(CATALOG_FILTER_KEY, JSON.stringify({}));
     if (!ui.isSidebarCategories) {
-  closeDropdown();
-}
+      closeDropdown();
+    }
 
     isFilterDirty = false;
     syncUI();
@@ -264,63 +267,61 @@ overlay?.addEventListener("click", closeDropdown);
 
   /* ---------- DATA ---------- */
 
-async function updateCatalog() {
-  let payload = {};
+  async function updateCatalog() {
+    let payload = {};
 
-  // 🔥 Всегда читаем актуальное состояние из sessionStorage
-  const saved = sessionStorage.getItem(CATALOG_FILTER_KEY);
+    // 🔥 Всегда читаем актуальное состояние из sessionStorage
+    const saved = sessionStorage.getItem(CATALOG_FILTER_KEY);
 
-  let selected = {};
+    let selected = {};
 
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      for (const [g, arr] of Object.entries(parsed)) {
-        selected[g] = new Set(arr);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        for (const [g, arr] of Object.entries(parsed)) {
+          selected[g] = new Set(arr);
+        }
+      } catch {
+        selected = {};
       }
-    } catch {
-      selected = {};
     }
-  }
 
-  const hasAnySelected = Object.values(selected).some(
-    (set) => set.size > 0,
-  );
+    const hasAnySelected = Object.values(selected).some((set) => set.size > 0);
 
-  // ✅ Первый запуск вкладки → акции
-  if (saved === null) {
-    payload = {
-      stock: ["all"],
-    };
-  }
-  // ✅ Есть выбранные фильтры
-  else if (hasAnySelected) {
-    for (const [g, set] of Object.entries(selected)) {
-      if (set.size) payload[g] = [...set];
+    // ✅ Первый запуск вкладки → акции
+    if (saved === null) {
+      payload = {
+        stock: ["all"],
+      };
     }
-  }
+    // ✅ Есть выбранные фильтры
+    else if (hasAnySelected) {
+      for (const [g, set] of Object.entries(selected)) {
+        if (set.size) payload[g] = [...set];
+      }
+    }
 
-  // иначе payload = {} → все товары
+    // иначе payload = {} → все товары
 
-  try {
-    // Обновляем корзину
     try {
-      const cart = await fetchCartRaw();
-      cartItems = cart.items || {};
-    } catch {
-      cartItems = {};
-    }
+      // Обновляем корзину
+      try {
+        const cart = await fetchCartRaw();
+        cartItems = cart.items || {};
+      } catch {
+        cartItems = {};
+      }
 
-    // Получаем каталог
-    const data = await fetchCatalogByCategories(payload);
+      // Получаем каталог
+      const data = await fetchCatalogByCategories(payload);
 
-    if (data?.items) {
-      renderItems(data.items);
+      if (data?.items) {
+        renderItems(data.items);
+      }
+    } catch (e) {
+      console.warn("Catalog update error:", e);
     }
-  } catch (e) {
-    console.warn("Catalog update error:", e);
   }
-}
 
   function renderItems(items) {
     const grid = main_box.querySelector(".catalog-grid");
@@ -329,7 +330,7 @@ async function updateCatalog() {
     for (const p of Object.values(items)) {
       const card = createProductCard(
         {
-          name: p.name,      // ✅ теперь карточка получит name
+          name: p.name,
           cost: p.cost ?? "—",
           description: p.description ?? "",
           image: p.image || null,
@@ -337,7 +338,10 @@ async function updateCatalog() {
           factory: p.factory,
           size: p.size,
         },
-        { quantity: cartItems[p.id] ?? 0 }
+        {
+          quantity: cartItems[p.id] ?? 0,
+          isDesktop: ui.isSidebarCategories,
+        },
       );
 
       grid.appendChild(card);
@@ -346,22 +350,22 @@ async function updateCatalog() {
 
   window.addEventListener("global-search", (e) => {
     renderItems(e.detail);
-  });  
-  
+  });
+
   window.addEventListener("global-search-reset", () => {
-  updateCatalog();
-});
+    updateCatalog();
+  });
 
   const localInput = main_box.querySelector(
-  '.catalog-header input[placeholder="Поиск"]'
-);
+    '.catalog-header input[placeholder="Поиск"]',
+  );
 
-createSearchHandler({
-  input: localInput,
-  fetchFn: fetchCatalogSearch,
-  renderFn: renderItems,
-  resetFn: updateCatalog,
-});
+  createSearchHandler({
+    input: localInput,
+    fetchFn: fetchCatalogSearch,
+    renderFn: renderItems,
+    resetFn: updateCatalog,
+  });
 
   updateCatalog();
 }
