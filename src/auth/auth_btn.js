@@ -94,12 +94,12 @@ export function showAuthModal(onSuccess) {
 
 
               <input
-                  class="auth-login w-full rounded px-2 py-1 text-sm bg-blue-500"
+                  class="auth-login w-full rounded px-2 py-1 text-base bg-blue-500"
                   placeholder="Логин"
                 />
               <input
                   type="password"
-                  class="auth-password w-full rounded px-2 py-1 text-sm bg-cyan-300"
+                  class="auth-password w-full rounded px-2 py-1 text-base bg-cyan-300"
                   placeholder="Пароль"
                 />
 
@@ -154,6 +154,11 @@ export function showAuthModal(onSuccess) {
 
     if (e.target.classList.contains("auth-submit")) {
       const loginInput = modal.querySelector(".auth-login");
+      if (loginInput) {
+        loginInput.addEventListener("input", () => {
+          loginInput.value = loginInput.value.toLowerCase();
+        });
+      }
       const passInput = modal.querySelector(".auth-password");
       const errorBox = modal.querySelector(".auth-error");
 

@@ -158,9 +158,9 @@ def get_cart(request: Request):
             else:
                 image_url = None
 
-            line_cost = float(cost) * quantity
-            line_weight = float(size) * quantity if size else 0
-            line_size = float(size) * quantity if size else 0
+            line_cost = round(float(cost) * quantity, 2)
+            line_weight = round(float(size) * quantity, 2) if size else 0
+            line_size = round(float(size) * quantity, 2) if size else 0
 
             total_cost += line_cost
             total_weight += line_weight
@@ -183,9 +183,9 @@ def get_cart(request: Request):
         return {
             "items": cart_items,
             "summary": {
-                "total_cost": total_cost,
-                "total_weight": total_weight,
-                "total_size": total_size,
+                "total_cost": round(total_cost, 2),
+                "total_weight": round(total_weight, 2),
+                "total_size": round(total_size, 2),
             }
         }
 
@@ -257,8 +257,8 @@ def create_order(
 
         # 4️⃣ Добавляем order_items
         for product_id, quantity, name, cost, size in rows:
-            line_cost = cost * quantity
-            line_weight = size * quantity if size else 0
+            line_cost = round(float(cost) * quantity, 2)
+            line_weight = round(float(size) * quantity, 2) if size else 0
 
             total_cost += line_cost
             total_weight += line_weight
@@ -283,6 +283,8 @@ def create_order(
             ))
 
         # 5️⃣ Обновляем итоговую сумму
+        total_cost = round(total_cost, 2)
+        total_weight = round(total_weight, 2)
         cur.execute("""
             UPDATE orders
             SET total_cost = %s,

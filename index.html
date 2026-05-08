@@ -41,25 +41,42 @@
 >
         <div class="flex items-center gap-6">
           <!-- ЛОГОТИП -->
-          <button
-            data-page="sale"
-            class="nav-btn"
-          >
-            <div class="font-bold text-lg hover:underline">
-              Логотип
-            </div>
-          </button>
+<button
+  data-page="sale"
+  class="
+    nav-btn
+    text-[17px]
+    font-medium
+    tracking-tight
+  "
+>
+  Логотип
+</button>
 
           <!-- КАТАЛОГ -->
-          <button
-            data-page="catalog"
-            class="
-              nav-btn
-              font-bold text-lg hover:underline
-            "
-          >
-            Каталог
-          </button>
+<button
+  data-page="catalog"
+  class="
+    nav-btn
+    group
+    flex items-center gap-2
+    text-[17px]
+    font-medium
+    tracking-tight
+  "
+>
+  <img
+    src="/src/server/app/assets/icons/catalog.svg"
+    alt=""
+    class="
+      w-5 h-5
+      transition duration-200
+      group-hover:scale-110
+    "
+  />
+
+  <span>Каталог</span>
+</button>
         </div>
                   
                   <div class="flex-1 flex justify-center">
@@ -73,17 +90,39 @@
                   </div>
 
 <div class="flex gap-6">
-  <button
-    data-page="cart"
-    class="nav-btn font-medium hover:underline"
-  >
-    Корзина
-  </button>
+<button
+  data-page="cart"
+  class="
+    nav-btn
+    group
+    flex items-center gap-2
+    text-[17px]
+    font-medium
+    tracking-tight
+  "
+>
+  <img
+    src="/src/server/app/assets/icons/cart.svg"
+    alt=""
+    class="
+      w-5 h-5
+      transition duration-200
+      group-hover:scale-110
+    "
+  />
 
-  <button
-    data-page="profile"
-    class="nav-btn font-medium hover:underline"
-  >
+  <span>Корзина</span>
+</button>
+
+<button
+  data-page="profile"
+  class="
+    nav-btn
+    text-[17px]
+    font-medium
+    tracking-tight
+  "
+>
     Личный кабинет
   </button>
 </div>
@@ -99,17 +138,52 @@
         <!-- ================= МОБИЛКА: НИЖНЯЯ НАВИГАЦИЯ ================= -->
         <nav class="lg:hidden flex h-16 bg-gray-200 border-black">
           <div class="flex-1 flex items-center justify-center">
-            <button data-page="sale" class="nav-btn text-5xl sm:text-3xl">🏷️</button>
+            <button data-page="sale" class="nav-btn group">
+              <img
+                src="/src/server/app/assets/icons/sale.svg"
+                alt="Скидки"
+                class="  w-8 h-8
+  transition-all duration-200
+  group-hover:invert"
+              />
+            </button>
           </div>
+
           <div class="flex-1 flex items-center justify-center">
-            <button data-page="catalog" class="nav-btn text-5xl sm:text-3xl">📦</button>
+            <button data-page="catalog" class="nav-btn group">
+              <img
+                src="/src/server/app/assets/icons/catalog.svg"
+                alt="Каталог"
+                class="      w-8 h-8
+  transition-all duration-200
+  group-hover:invert"
+              />
+            </button>
           </div>
+
           <div class="flex-1 flex items-center justify-center">
-            <button data-page="cart" class="nav-btn text-5xl sm:text-3xl">🛒</button>
+            <button data-page="cart" class="nav-btn group">
+              <img
+                src="/src/server/app/assets/icons/cart.svg"
+                alt="Корзина"
+                class="      w-8 h-8
+  transition-all duration-200
+  group-hover:invert"
+              />
+            </button>
           </div>
+
           <div class="flex-1 flex items-center justify-center">
-            <button data-page="profile" class="nav-btn text-5xl sm:text-3xl">👤</button>
-          </div>
+            <button data-page="profile" class="nav-btn group">
+              <img
+                src="/src/server/app/assets/icons/profile.svg"
+                alt="Профиль"
+                class="      w-8 h-8
+  transition-all duration-200
+  group-hover:invert"
+              />
+            </button>
+            </div>
         </nav>
       </div>
     </div>

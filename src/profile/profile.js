@@ -202,17 +202,17 @@ export function renderProfile(main_box) {
     </div>
 
     <!-- order_summary -->
-    <div class="order_summary w-full lg:flex-1 px-4 py-3 bg-gray-400">
+    <div class="order_summary w-full lg:flex-1 px-4 py-3">
       <div class="grid grid-cols-3 gap-4 text-center">
-        <div class="stat-card bg-white rounded-lg p-3">
+        <div class="stat-card bg-white rounded-lg p-3 border">
           <div class="text-sm text-gray-600">Сумма</div>
           <div class="text-lg font-semibold">???</div>
         </div>
-        <div class="stat-card bg-white rounded-lg p-3">
+        <div class="stat-card bg-white rounded-lg p-3 border">
           <div class="text-sm text-gray-600">Заказы</div>
           <div class="text-lg font-semibold">???</div>
         </div>
-        <div class="stat-card bg-white rounded-lg p-3">
+        <div class="stat-card bg-white rounded-lg p-3 border">
           <div class="text-sm text-gray-600">Вес</div>
           <div class="text-lg font-semibold">???</div>
         </div>

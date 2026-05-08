@@ -64,15 +64,44 @@ export async function renderCart(main_box) {
   "
 >
 
-  <!-- Верхний spacer -->
-  <div class="hidden lg:block h-20"></div>
+<div class="flex w-full flex-col h-full py-4 gap-4">
 
-  <!-- МОБИЛКА: row / ПК: column -->
-  <div class="flex w-full items-center gap-3 lg:flex-col lg:gap-4 lg:h-full">
+  <!-- Верхняя зона -->
+  <div
+    class="
+      hidden lg:flex
+      flex-1
+      rounded-2xl
+      border
+      border-gray-200
+      bg-gray-50
+    "
+  >
+    <!-- future delivery info -->
+  </div>
+
+  <!-- Нижняя зона -->
+<div
+  class="
+    w-full
+    flex
+    items-center
+    justify-center
+    gap-3
+    h-full
+    lg:h-auto
+
+    lg:flex-col
+    lg:items-stretch
+    lg:justify-end
+    lg:gap-4
+  "
+>
 
     <!-- Summary -->
-    <div class="order_summary flex-1 lg:flex-none w-full">
+    <div class="order_summary flex-1 lg:w-full">
       <div class="grid grid-cols-2 lg:grid-cols-1 gap-3 text-center w-full">
+
         <div class="stat-card bg-gray-400 rounded-lg p-3">
           <div class="text-sm text-gray-600">Сумма</div>
           <div id="cart-total-price" class="text-lg font-semibold">0 ₸</div>
@@ -80,12 +109,13 @@ export async function renderCart(main_box) {
 
         <div class="stat-card bg-gray-400 rounded-lg p-3">
           <div class="text-sm text-gray-600">Вес</div>
-          <div id="cart-total-weight" class="text-lg font-semibold">0 кг</div>
+          <div id="cart-total-weight" class="text-lg font-semibold">
+            0 кг
+          </div>
         </div>
+
       </div>
     </div>
-
-    <div class="hidden lg:block flex-1"></div>
 
     <!-- Кнопка -->
     <button
@@ -97,7 +127,7 @@ export async function renderCart(main_box) {
         rounded-xl
         transition-colors
         disabled:opacity-50
-        shrink-0
+        shrink-0 self-center
         lg:w-full
       "
     >
@@ -106,8 +136,7 @@ export async function renderCart(main_box) {
 
   </div>
 
-  <!-- Нижний spacer -->
-  <div class="hidden lg:block h-12"></div>
+</div>
 
 </div>
 

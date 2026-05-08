@@ -22,6 +22,7 @@ def set_auth_cookie(response, token, expire_minutes):
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 def register(data: RegisterRequest, response: Response):
+    data.login = data.login.lower()
     password_hash = pwd_context.hash(data.password)
 
     conn = get_db()
@@ -96,6 +97,7 @@ def register(data: RegisterRequest, response: Response):
 
 @router.post("/login")
 def login(data: LoginRequest, response: Response):
+    data.login = data.login.lower()
     conn = get_db()
     cur = conn.cursor()
 
