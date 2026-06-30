@@ -60,7 +60,7 @@ export function showAuthModal(onSuccess) {
 
   const render = () => {
     overlay.innerHTML = `
-      <div class="bg-amber-500/75 w-64 flex flex-col items-center gap-3 rounded-xl p-4 auth-modal">
+      <div class="bg-zinc-900 border border-zinc-800 shadow-2xl w-64 flex flex-col items-center gap-3 rounded-xl p-4 auth-modal">
 
         ${
           mode === "choose"
@@ -94,12 +94,12 @@ export function showAuthModal(onSuccess) {
 
 
               <input
-                  class="auth-login w-full rounded px-2 py-1 text-base bg-blue-500"
+                  class="auth-login w-full rounded px-2 py-1 text-base bg-zinc-800 border border-zinc-700 text-white"
                   placeholder="Логин"
                 />
               <input
                   type="password"
-                  class="auth-password w-full rounded px-2 py-1 text-base bg-cyan-300"
+                  class="auth-password w-full rounded px-2 py-1 text-base bg-zinc-800 border border-zinc-700 text-white"
                   placeholder="Пароль"
                 />
 

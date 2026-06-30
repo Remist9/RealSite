@@ -1,4 +1,4 @@
-import { getUserAddress } from "../profile/profile_api";
+import { getUserAddress, addUserAddress } from "../profile/profile_api";
 import { userAddressAdd } from "../profile/user_address_add";
 import { fetchOrder } from "./cart_api.js";
 
@@ -154,8 +154,10 @@ export async function openCartSubmit({ mode, summary, onSuccess }) {
   addBtn.onclick = async (e) => {
     e.stopPropagation();
 
-    const changed = await userAddressAdd();
-    if (!changed) return;
+    const address = await userAddressAdd();
+    if (!address) return;
+
+    await addUserAddress(address);
 
     const freshAddresses = await getUserAddress();
     dropdown.innerHTML = "";
@@ -165,8 +167,10 @@ export async function openCartSubmit({ mode, summary, onSuccess }) {
     });
 
     const last = freshAddresses.at(-1);
+
     if (last) {
       selectedAddress = last;
+
       selectedText.textContent = last.address;
       selectedText.classList.remove("text-gray-500");
 
